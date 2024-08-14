@@ -17,5 +17,21 @@ router.get('/alreadyloggedin',auth,(req,res)=>{
     })
 })
 
+router.get('/logout',(req,res)=>{
+    try{
+        return res.clearCookie('token').json({
+            success: true,
+            message: "User Logged Out Successfully"
+        });
+        
+    }
+    catch(e){
+        return res.json({
+            success:false,
+            message:"Errors while logging out"
+        })
+    }
+})
+
 
 module.exports=router;

@@ -39,9 +39,9 @@ exports.signup = async (req, res) => {
 
       const newUser = new User({ name, email, password:hashedPass, role });
       await newUser.save();
-      return res.status(400).json({
+      return res.status(200).json({
         success: true,
-        message: "Account Created Successfully",
+        message: "Account Created Successfully, Please login to continue",
       });
     
   } catch (error) {
