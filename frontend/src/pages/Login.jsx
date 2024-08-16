@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../index.css"
 import {toast} from "react-hot-toast";
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
 
 function Login() {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const[eye,setEye] = useState(true);
 
     const submit = async (e) => {
-        e.preventDefault();
+
+
+        
+      
+            e.preventDefault();
 
         try {
             const response = await fetch('http://localhost:4000/login', {
@@ -36,6 +43,8 @@ function Login() {
             alert("An error occurred. Please try again.");
             console.error(error);
         }
+        
+        
     };
 
     return (
@@ -55,17 +64,24 @@ function Login() {
                             className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 relative">
                         <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
                         <input
                             id="password"
-                            type="password"
+                            type={eye?"password":"text"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+
                             placeholder="Password"
                             required
                             className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                        
+                        {eye?<IoMdEye className="text-xl absolute right-2 bottom-3" onClick={()=>{
+                            setEye(false)
+                        }}/>:<IoMdEyeOff className="text-xl absolute right-2 bottom-3" onClick={()=>{
+                            setEye(true);
+                        }}/>}
                     </div>
                     <button
                         type="submit"
