@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export const Appbar=()=>{
+export const Appbar=({addbtn})=>{
 
     const navigate=useNavigate();
 
@@ -31,6 +31,8 @@ export const Appbar=()=>{
         <div className="flex flex-col justify-center ">
               TaskFlow
         </div>
+
+        {addbtn ? <button onClick={()=>{navigate('/createvoice')}}>ADD TASK</button> :""}
 
         <button onClick={logout}>Log out</button>
         

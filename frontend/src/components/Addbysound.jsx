@@ -1,73 +1,103 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
+import {AppContext} from "../context/AppContext"
+import { useNavigate } from "react-router-dom";
 
 export function Addbysound() {
   const audio = useRef([]);
   const [recordings, setRecordings] = useState([]);
-  const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
+  const [audioblobcopy,setcopy]=useState();
 
-  async function startRec() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      setIsRecording(true);
+  const navigate=useNavigate();
 
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          audio.current.push(e.data); // Push data chunks to the array
-        }
-      };
+  const {teamName}=useContext(AppContext);
 
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audio.current, { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setRecordings((prev) => [...prev, audioUrl]);
-        audio.current = []; // Clear the recorded data after stopping
-        setIsRecording(false);
-      };
+  async function startRec(){
+      try{
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const mediaRecorder = new MediaRecorder(stream);
 
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.start();
-    } catch (e) {
-      console.error(e);
-    }
+          mediaRecorder.ondataavailable = (e) => {
+              if(e.data.size > 0){
+                  audio.current.push(e.data);
+              }
+          }
+
+          mediaRecorder.onstop = async () => {
+              const audioBlob = new Blob(audio.current, { type: 'audio/wav' });
+              const audioUrl = URL.createObjectURL(audioBlob);
+              setcopy(audioBlob);
+
+              setRecordings((prev) => [...prev, audioUrl]);
+
+              // Convert Blob to Base64
+          };
+
+          mediaRecorderRef.current = mediaRecorder;
+          mediaRecorder.start();
+      } catch (e) {
+          console.log(e);
+      }
   }
 
   function stopRec() {
-    if (mediaRecorderRef.current) {
-      if (mediaRecorderRef.current.state === 'recording') {
-        mediaRecorderRef.current.stop(); // Stop the recording
-      }
-    } else {
-      console.error('MediaRecorder reference not available');
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.stop();
     }
-  }
+}
 
-  useEffect(() => {
-    return () => {
-      const mediaRecorder = mediaRecorderRef.current;
-      if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop(); // Stop recording if the component unmounts
-      }
-      mediaRecorderRef.current = null;
-    };
-  }, []); // Dependency array should be empty
+  async function send(){
+    const reader = new FileReader();
+            reader.readAsDataURL(audioblobcopy);
+            reader.onloadend = async () => {
+                const base64data = reader.result.split(',')[1]; // Remove the data URL prefix
 
+                // Prepare JSON data to send to the server
+                const audioData = {
+                    audioBlob: base64data,
+                    filename: 'recording.wav',
+                    mimeType: 'audio/wav',
+                    groupName:teamName
+                };
+
+                // Post the data to the server
+                try {
+                    const response = await fetch('http://localhost:4000/sendToGroup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(audioData),
+                        credentials:'include'
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        console.log("Audio saved successfully:", result.audioDoc);
+                        navigate('/home');
+                    } else {
+                        console.error("Failed to save audio:", result.message);
+                    }
+                } catch (error) {
+                    console.error("Error saving audio:", error);
+                }
+            };
+}
   return (
-    <div>
-      <div className="flex justify-center">
-        <button className="border-gray-800 p-2 bg-slate-300 m-3" onClick={startRec}>START</button>
-        <button className="border-gray-800 p-2 bg-slate-300 m-3" onClick={stopRec}>STOP</button>
-      </div>
-      {isRecording && <div className="blinking-recording-button text-white bg-red-500 p-2 m-3 rounded font-bold">Recording...</div>}
-
-      <div>
-        {recordings.map((recUrl, index) => (
-          <div key={index}>
-            <audio controls src={recUrl} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <div className="flex justify-center items-center h-screen gap-x-10 font-bold">
+    <button onClick={startRec}>START</button><br /><br />
+    <button onClick={stopRec}>STOP</button> <br /><br />
+    <button onClick={send}>SEND</button>
+    {
+        recordings.map((recUrl, index) => {
+            return (
+                <div key={index}> 
+                    <audio controls src={recUrl}/>
+                </div>
+            )
+        })
+    }
+    
+</div>
   );
 }

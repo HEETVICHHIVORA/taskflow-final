@@ -3,7 +3,7 @@ import { Searchbar } from "./Searchbar"
 import { Team } from "./Team"
 
 
-export const Sidebar =()=>{
+export const Sidebar =({tasks,settasks,setaddbtn})=>{
     const [groups,setgroups]=useState([]);
 
     async function getTeams(){
@@ -38,7 +38,7 @@ export const Sidebar =()=>{
         <Searchbar></Searchbar>
         {groups?.map((group,index)=>{
             return (
-                <Team group={group}/>
+                <Team group={group} settasks={settasks} setaddbtn={setaddbtn}/>
             )
         })}
     </div>

@@ -119,4 +119,68 @@ exports.createteam = async (req, res) => {
         console.log(e);
     }
   }
+
+  exports.sendToGroup=async(req,res)=>{
+    try{
+      const {groupName,audioBlob, filename, mimeType}=req.body;
+      const payload=req.payload;
+      const userid=payload.id;
+
+      const user=await User.findById(userid);
+
+      const audioBuffer = Buffer.from(audioBlob, 'base64');
+
+      const audioDoc = new taskschema({
+          filename: filename,
+          mimeType: mimeType,
+          size: audioBuffer.length,
+          audioData: audioBuffer,
+          createdBy:user._id
+      });
+
+      const savedTask=await audioDoc.save();
+
+      await groupschema.findOneAndUpdate({name:groupName},{$push:{tasks:savedTask._id}},{new:true});
+
+      return res.status(200).json({
+        success:true,
+        message:"Task added successfully"
+      })
+
+    }
+    catch(e){
+      res.status(500).json({
+          success: false,
+          message: "Failed to send audio",
+          error: e.message
+      });
+    }
+  }
+
+  exports.getAllTasks=async(req,res)=>{
+    try{
+      const groupName = req.query.name;
+      const group=await groupschema.findOne({name:groupName}).populate('tasks');
+
+      const audioDataArray=group.tasks.map(audioDoc => ({
+        filename: audioDoc.filename,
+        mimeType: audioDoc.mimeType,
+        base64Audio: audioDoc.audioData.toString('base64'),
+    }));
+
+
+      return res.json({
+        success:true,
+        message:"All tasks are fetched",
+        audioData: audioDataArray
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch tasks",
+        error: e.message
+    });
+    }
+  }
   

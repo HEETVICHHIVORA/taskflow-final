@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 
 const {signup,login}=require('../controllers/auth');
-const {createteam,createtask,createcomment,getGroups}=require('../controllers/group');
+const {createteam,createtask,createcomment,getGroups,sendToGroup,getAllTasks}=require('../controllers/group');
 const {auth}=require('../middlewares/auth');
 
 
@@ -12,7 +12,10 @@ router.post('/createteam',createteam)
 router.post('/createtask',createtask)
 router.post("/createcomment",createcomment)
 
+
 router.get('/getteams',auth,getGroups);
+router.post('/sendToGroup',auth,sendToGroup);
+router.get('/getAllTasks',getAllTasks);
 
 router.get('/alreadyloggedin',auth,(req,res)=>{
     return res.json({

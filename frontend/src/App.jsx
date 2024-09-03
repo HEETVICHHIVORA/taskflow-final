@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/temp" element={<Temp />} />
           <Route path='/home' element ={<Homepage/>}></Route>
-          <Route path='/create' element ={<Addbytext/>}></Route>
+          <Route path='/createtext' element ={<Addbytext/>}></Route>
           <Route path='/createvoice' element ={<Addbysound/>}></Route>
         </Routes>
       </Router>
