@@ -6,6 +6,7 @@ const userschema=mongoose.Schema({
     // Add more fields as needed
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }, // Store hashed passwords
+    group:[{type:mongoose.Schema.Types.ObjectId,ref:'groupschema'}]
 })
 
 

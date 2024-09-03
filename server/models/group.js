@@ -4,7 +4,7 @@ const groupschema=mongoose.Schema({
     name: { type: String, required: true },
     admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    // Additional fields can be added
+    tasks:[{type:mongoose.Schema.Types.ObjectId,ref:'taskschema'}]
 })
 
 

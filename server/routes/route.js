@@ -1,14 +1,18 @@
 const express=require('express');
 const router=express.Router();
 
-const {signup,login, createteam,createtask,createcomment}=require('../controllers/auth');
+const {signup,login}=require('../controllers/auth');
+const {createteam,createtask,createcomment,getGroups}=require('../controllers/group');
 const {auth}=require('../middlewares/auth');
+
 
 router.post('/signup',signup);
 router.post('/login',login);
 router.post('/createteam',createteam)
 router.post('/createtask',createtask)
 router.post("/createcomment",createcomment)
+
+router.get('/getteams',auth,getGroups);
 
 router.get('/alreadyloggedin',auth,(req,res)=>{
     return res.json({

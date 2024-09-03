@@ -21,7 +21,7 @@ function Home() {
             const res=await response.json();
 
             if(res.success){
-                navigate('/temp')
+                navigate('/home')
             }
         }
         catch(e){

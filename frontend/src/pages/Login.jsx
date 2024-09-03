@@ -35,7 +35,7 @@ function Login() {
             console.log(res);
             if (res.success) {
                 toast.success(res.message);
-                navigate("/temp", { state: { id: email } });
+                navigate("/home", { state: { id: email } });
             } else{
                 toast.error(res.message);
             }

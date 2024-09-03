@@ -6,10 +6,11 @@ const taskschema = require("../models/task");
 const commentschema = require("../models/comment");
 
 const { Admin } = require("mongodb");
+const group = require("../models/group");
 
 
 exports.signup = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role ,groupid} = req.body;
   try {
     if (!name || !email || !password || !role) {
       return res.status(400).json({
@@ -37,7 +38,9 @@ exports.signup = async (req, res) => {
         })
     }
 
-      const newUser = new User({ name, email, password:hashedPass, role });
+    const team=groupid;
+
+      const newUser = new User({ name, email, password:hashedPass, role ,group:team});
       await newUser.save();
       return res.status(200).json({
         success: true,
@@ -101,90 +104,3 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.createteam = async (req, res) => {
-  try {
-    const { name, email, members, teamname } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User Not Found",
-      });
-    }
-
-    const team = await new groupschema({
-      name: teamname,
-      admin: name,
-      members: members,
-    });
-
-    await team.save();
-    return res.status(200).json({
-      success: true,
-      message: "Team Added Successfully",
-      team,
-    });
-  } catch (error) {
-    console.error("Error in login:", error);
-    res.status(500).json("fail");
-  }
-};
-
-exports.createtask = async (req, res) => {
-  try {
-    const { email, description, groupId, audiourl, createdby } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User Not Found",
-      });
-    }
-
-    const task = await new taskschema({
-      description: description,
-      audioUrl: audiourl,
-      createdBy: createdby,
-      groupId: groupId,
-    });
-
-    await task.save();
-    return res.status(200).json({
-      success: true,
-      message: "Task added",
-      task,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-exports.createcomment = async (req, res) => {
-  try {
-    const { email, content, createdBy, taskId } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User Not Found",
-      });
-    }
-
-    const comment = await new commentschema({
-      content,
-      createdBy,
-      taskId,
-    });
-
-    await comment.save();
-    return res.status(200).json({
-      success: true,
-      message: "comment added",
-      comment,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
