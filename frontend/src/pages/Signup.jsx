@@ -58,13 +58,13 @@ function Signup() {
                 <h1 className="text-2xl font-semibold mb-6 text-center">Signup</h1>
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1" htmlFor="name">Name</label>
+                        <label className="block text-sm font-medium mb-1" htmlFor="name">Username</label>
                         <input
                             id="name"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="Name"
+                            placeholder="xyz07"
                             required
                             className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -76,7 +76,7 @@ function Signup() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
+                            placeholder="xyz@gmail.com"
                             required
                             className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -88,7 +88,7 @@ function Signup() {
                             type={eye?"password":"text"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
+                            placeholder="xyz123@*"
                             required
 
                             className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"

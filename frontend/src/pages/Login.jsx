@@ -13,10 +13,6 @@ function Login() {
     const[eye,setEye] = useState(true);
 
     const submit = async (e) => {
-
-
-        
-      
             e.preventDefault();
 
         try {
@@ -40,7 +36,6 @@ function Login() {
                 toast.error(res.message);
             }
         } catch (error) {
-            alert("An error occurred. Please try again.");
             console.error(error);
         }
         

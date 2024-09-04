@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export const Appbar=({addbtn})=>{
+export const Appbar=({addbtn,createTeam})=>{
 
     const navigate=useNavigate();
 
@@ -33,6 +33,7 @@ export const Appbar=({addbtn})=>{
         </div>
 
         {addbtn ? <button onClick={()=>{navigate('/createvoice')}}>ADD TASK</button> :""}
+        {createTeam ? <button onClick={()=>{navigate('/createteam')}}>CREATE TEAM</button> :""}
 
         <button onClick={logout}>Log out</button>
         

@@ -19,11 +19,18 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingUser1 = await User.findOne({ email });
+    if (existingUser1) {
       return res.status(400).json({
         success: false,
         message: "This email id is already registered",
+      });
+    } 
+    const existingUser2 = await User.findOne({ name });
+    if (existingUser2) {
+      return res.status(400).json({
+        success: false,
+        message: "This username is already taken",
       });
     } 
 

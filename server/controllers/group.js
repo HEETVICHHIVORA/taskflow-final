@@ -184,3 +184,68 @@ exports.createteam = async (req, res) => {
     }
   }
   
+  exports.getallusers=async(req,res)=>{
+    try{
+      const users = await User.find({}, 'name'); 
+      // console.log("ALL : " , users);
+      // console.log("REQ : " ,req.user.name);
+
+      const filteredUsers=users.filter(user=>user.name!==req.user.name);
+      return res.status(200).json({
+        success:true,
+        message:"All users fetched successully",
+        allusers:filteredUsers
+      })
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
+
+  exports.createNewTeam=async(req,res)=>{
+    try{
+      const teamAdmin=req.user;
+      const {members,teamName}=req.body;
+
+      if(!teamName){
+        return res.json({
+          success:false,
+          message:"Group Name is required"
+        })
+      }
+
+      const alreadyExist = await groupschema.findOne({ name: new RegExp(`^${teamName}$`, 'i') });
+
+      
+      if(alreadyExist){
+        return res.json({
+          success:false,
+          message:"Already exist group with given name"
+        })
+      }
+
+      const newTeam=await groupschema.create({
+        name:teamName,
+        admin:teamAdmin._id
+      })
+      await User.findByIdAndUpdate(teamAdmin._id,{$push:{group:newTeam._id}},{new:true});
+      await groupschema.findByIdAndUpdate(newTeam._id,{$push:{members:teamAdmin._id}},{new:true});
+
+      for(let i=0;i<members.length;i++){
+        const member=await User.findByIdAndUpdate(members[i].id,{$push:{group:newTeam._id}},{new:true});
+        await groupschema.findByIdAndUpdate(newTeam._id,{$push:{members:member._id}},{new:true});
+      }
+
+      return res.json({
+        success:true,
+        message:"New Team Created Successfully"
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to create new Group",
+        error: e.message
+    });
+    }
+  }

@@ -18,9 +18,9 @@ exports.auth=async(req,res,next)=>{
             const payload=jwt.verify(token,process.env.JWT_SECRET);
             // console.log(payload);
             req.payload=payload;
-            console.log("payload :- ",payload);
+            // console.log("payload :- ",payload);
             const userExist=await User.findById(payload.id);
-
+            req.user=userExist;
             if(!userExist){
                 return res.status(404).json({
                     success:false,
@@ -35,6 +35,7 @@ exports.auth=async(req,res,next)=>{
                 message:'token is invalid',
             });
         }
+        // console.log("ARA HE");
         next();
     }
     catch(e){

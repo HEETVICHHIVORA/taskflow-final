@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import {AppContext} from "../context/AppContext"
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 export function Addbysound() {
   const audio = useRef([]);
@@ -73,7 +74,8 @@ export function Addbysound() {
 
                     const result = await response.json();
                     if (result.success) {
-                        console.log("Audio saved successfully:", result.audioDoc);
+                        // console.log("Audio saved successfully:", result.audioDoc);
+                        toast.success(result.message);
                         navigate('/home');
                     } else {
                         console.error("Failed to save audio:", result.message);

@@ -6,6 +6,7 @@ import Temp from "./pages/Temp";
 import { Addbytext } from './components/Addbytext';
 import { Addbysound } from './components/Addbysound';
 import  Homepage  from "./pages/Homepage";
+import CreateTeam from "./pages/CreateTeam";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/home' element ={<Homepage/>}></Route>
           <Route path='/createtext' element ={<Addbytext/>}></Route>
           <Route path='/createvoice' element ={<Addbysound/>}></Route>
+          <Route path='/createteam' element ={<CreateTeam/>}></Route>
         </Routes>
       </Router>
     </div>
