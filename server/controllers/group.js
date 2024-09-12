@@ -249,3 +249,36 @@ exports.createteam = async (req, res) => {
     });
     }
   }
+
+  exports.searchGroups=async(req,res)=>{
+    try{
+
+        const {prefix}=req.body;
+        const payload=req.payload;
+
+        const userid=payload.id;
+
+        const user=await User.findById(userid).populate("group");
+
+        if(!user){
+            return res.json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        const groups=user.group;
+
+        const filteredGroups = groups.filter(group=> group.name.toLowerCase().includes(prefix.toLowerCase()));
+        // console.log("Groups for " , prefix ," : " , filteredGroups);
+
+        return res.json({
+          success:true,
+          message:"Successfully extracted searched groups",
+          groups:filteredGroups
+        })
+    }
+    catch(e){
+        console.log(e);
+    }
+  }

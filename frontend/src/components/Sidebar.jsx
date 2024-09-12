@@ -5,6 +5,7 @@ import { Team } from "./Team"
 
 export const Sidebar =({tasks,settasks,setaddbtn})=>{
     const [groups,setgroups]=useState([]);
+    const [isEmpty,setisEmpty]=useState(false);
 
     async function getTeams(){
         try {
@@ -32,15 +33,25 @@ export const Sidebar =({tasks,settasks,setaddbtn})=>{
         getTeams();
     },[])
 
+    useEffect(()=>{
+        if(groups.length==0){
+            setisEmpty(true)
+        }
+        else{
+            setisEmpty(false)
+        }
+    },[groups])
+
 
     return <div className="w-[30%] h-screen">
 
-        <Searchbar></Searchbar>
+        <Searchbar groups={groups} setgroups={setgroups}></Searchbar>
         {groups?.map((group,index)=>{
             return (
                 <Team group={group} settasks={settasks} setaddbtn={setaddbtn}/>
             )
         })}
+        {isEmpty && <p className="text-xl text-center pt-[50%]">No any groups</p>}
     </div>
        
 }
