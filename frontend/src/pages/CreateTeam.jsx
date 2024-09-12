@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import User from "../components/User";
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-hot-toast";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
 function CreateTeam(){
 
@@ -9,7 +11,11 @@ function CreateTeam(){
     const [allUsers,setallUsers]=useState([]);
     const navigate=useNavigate();
     const [newTeamMembers,setnewTeamMembers]=useState([]);
+    const {setloader}=useContext(AppContext);
+
+
     async function fetchallUsers() {
+        setloader(true)
         try{
             const response=await fetch('http://localhost:4000/getallusers',
                 {credentials:'include'}
@@ -24,6 +30,7 @@ function CreateTeam(){
         catch(e){
             console.log(e);
         }
+        setloader(false)
     }
 
     useEffect(()=>{
@@ -35,6 +42,7 @@ function CreateTeam(){
     }
 
     async function submitHandler(){
+        setloader(true)
         try{
             const response = await fetch('http://localhost:4000/createNewTeam', {
                 method: 'POST',
@@ -58,6 +66,7 @@ function CreateTeam(){
         catch(e){
             console.log(e);
         }
+        setloader(false)
     }
 
     return (

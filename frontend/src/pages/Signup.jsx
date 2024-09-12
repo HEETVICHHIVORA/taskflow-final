@@ -2,11 +2,17 @@ import {toast} from "react-hot-toast";
 import React, { useState } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
+
 
 import { useNavigate, Link } from "react-router-dom";
 import "../index.css"
 function Signup() {
     const navigate = useNavigate();
+    
+    const {setloader}=useContext(AppContext);
+
 
     const [name,setName]=useState('');
     const [email, setEmail] = useState('');
@@ -15,6 +21,7 @@ function Signup() {
     const[eye,setEye] = useState(true);
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if(password.length<8 ){
             toast.error("Password should be minimum 8 characters")
         }
@@ -22,6 +29,7 @@ function Signup() {
             toast.error("Password should be less than 16 characters")
         }
         else{
+            setloader(true)
             try {
                 const response = await fetch('http://localhost:4000/signup', {
                     method: 'POST',
@@ -48,7 +56,10 @@ function Signup() {
                 alert("An error occurred. Please try again.");
                 console.error(error);
             }
+            setloader(false)
         }
+
+        
         
     };
 

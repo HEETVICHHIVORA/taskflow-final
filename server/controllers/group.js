@@ -160,12 +160,21 @@ exports.createteam = async (req, res) => {
   exports.getAllTasks=async(req,res)=>{
     try{
       const groupName = req.query.name;
-      const group=await groupschema.findOne({name:groupName}).populate('tasks');
+      const group = await groupschema.findOne({ name: groupName })
+       .populate({
+    path: 'tasks', // First populate the 'tasks'
+    populate: { 
+      path: 'createdBy', // Then populate the 'createdBy' field inside 'tasks'
+      select: 'name' // Only fetch the 'name' field of the user
+    }
+  });
+
 
       const audioDataArray=group.tasks.map(audioDoc => ({
         filename: audioDoc.filename,
         mimeType: audioDoc.mimeType,
         base64Audio: audioDoc.audioData.toString('base64'),
+        sender:audioDoc.createdBy.name
     }));
 
 

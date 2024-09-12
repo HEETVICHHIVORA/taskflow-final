@@ -2,13 +2,18 @@ import React from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'; // Import Link to handle navigation
 import { useEffect } from "react";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
+
 
 function Home() {
     const location = useLocation();
     const userId = location.state?.id || "User";
     const navigate=useNavigate();
+    const {setloader}=useContext(AppContext);
     
     async function checkCookie(){
+        setloader(true)
         try{
             const response=await fetch('http://localhost:4000/alreadyloggedin',{
                 method:'GET',
@@ -27,6 +32,7 @@ function Home() {
         catch(e){
             console.log(e);
         }
+        setloader(false)
     }
 
     useEffect(()=>{

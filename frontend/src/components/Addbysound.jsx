@@ -3,11 +3,14 @@ import {AppContext} from "../context/AppContext"
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-hot-toast";
 
+
+
 export function Addbysound() {
   const audio = useRef([]);
   const [recordings, setRecordings] = useState([]);
   const mediaRecorderRef = useRef(null);
   const [audioblobcopy,setcopy]=useState();
+  const {setloader}=useContext(AppContext)
 
   const navigate=useNavigate();
 
@@ -48,6 +51,7 @@ export function Addbysound() {
 }
 
   async function send(){
+    setloader(true)
     const reader = new FileReader();
             reader.readAsDataURL(audioblobcopy);
             reader.onloadend = async () => {
@@ -83,6 +87,7 @@ export function Addbysound() {
                 } catch (error) {
                     console.error("Error saving audio:", error);
                 }
+                setloader(false)
             };
 }
   return (

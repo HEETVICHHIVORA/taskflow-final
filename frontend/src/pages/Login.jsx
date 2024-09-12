@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../index.css"
 import {toast} from "react-hot-toast";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
+import { AppContext } from "../context/AppContext";
 
 function Login() {
     const navigate = useNavigate();
-
+    const {setloader}=useContext(AppContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const[eye,setEye] = useState(true);
 
     const submit = async (e) => {
             e.preventDefault();
-
+            setloader(true);
         try {
             const response = await fetch('http://localhost:4000/login', {
                 method: 'POST',
@@ -38,7 +39,7 @@ function Login() {
         } catch (error) {
             console.error(error);
         }
-        
+        setloader(false)
         
     };
 
@@ -90,6 +91,7 @@ function Login() {
                     <Link to="/signup" className="text-blue-500 hover:underline">Signup Page</Link>
                 </div>
             </div>
+        
         </div>
     );
 }

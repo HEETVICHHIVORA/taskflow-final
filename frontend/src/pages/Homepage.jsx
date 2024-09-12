@@ -2,14 +2,18 @@ import {Sidebar} from "../components/Sidebar"
 import { Appbar } from "../components/Appbar";
 import Chatbox from "../components/Chatbox"
 import { useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
  const Homepage=()=>{
 
     const [addbtn,setaddbtn]=useState(false);
     const [createTeam,setcreateTeam]=useState(false);
     const [tasks,settasks]=useState([]);
+    const {setloader}=useContext(AppContext);
 
     async function authz() {
+        setloader(true)
         try{
             const response=await fetch('http://localhost:4000/getRole',{
                 credentials:'include'
@@ -23,6 +27,7 @@ import { useEffect, useState } from "react";
         catch(e){
             console.log(e);
         }
+        setloader(false)
     }
 
     useEffect(()=>{

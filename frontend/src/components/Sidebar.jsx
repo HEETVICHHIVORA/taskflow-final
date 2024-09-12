@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react"
 import { Searchbar } from "./Searchbar"
 import { Team } from "./Team"
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
 
 export const Sidebar =({tasks,settasks,setaddbtn})=>{
     const [groups,setgroups]=useState([]);
     const [isEmpty,setisEmpty]=useState(false);
+    const {setloader}=useContext(AppContext);
 
     async function getTeams(){
+        setloader(true)
         try {
             const response = await fetch('http://localhost:4000/getteams', {
                 method: 'GET',
@@ -27,6 +31,7 @@ export const Sidebar =({tasks,settasks,setaddbtn})=>{
         } catch (error) {
             console.error("Error saving audio:", error);
         }
+        setloader(false)
     }
 
     useEffect(()=>{
