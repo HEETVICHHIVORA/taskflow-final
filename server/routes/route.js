@@ -46,7 +46,8 @@ router.get('/logout',(req,res)=>{
 router.get('/getRole',auth,(req,res)=>{
     return res.json({
         success:true,
-        role:req.user.role
+        role:req.user.role,
+        name:req.user.name
     })
 })
 

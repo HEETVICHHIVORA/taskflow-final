@@ -11,6 +11,7 @@ import { useContext } from "react";
     const [createTeam,setcreateTeam]=useState(false);
     const [tasks,settasks]=useState([]);
     const {setloader}=useContext(AppContext);
+    const [currUser,setcurrUser]=useState("");
 
     async function authz() {
         setloader(true)
@@ -20,8 +21,9 @@ import { useContext } from "react";
             })
 
             const result=await response.json();
-            if(result.success && result.role==='manager'){
-                setcreateTeam(true);
+            if(result.success){
+                setcurrUser(result.name);
+                if(result.role==='manager')setcreateTeam(true);
             }
         }
         catch(e){
@@ -39,7 +41,7 @@ import { useContext } from "react";
     <Appbar addbtn={addbtn} createTeam={createTeam}/>
     <div className="flex justify-between">
     <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn}></Sidebar>
-    <Chatbox tasks={tasks}></Chatbox>
+    <Chatbox tasks={tasks} currUser={currUser}></Chatbox>
     </div>
     </div>)
     

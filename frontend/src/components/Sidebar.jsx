@@ -24,7 +24,7 @@ export const Sidebar =({tasks,settasks,setaddbtn})=>{
             const result = await response.json();
             if (result.success) {
                 setgroups(result.groups);
-                console.log("All teams fetched successfully",result.groups);
+                // console.log("All teams fetched successfully",result.groups);
             } else {
                 console.error("Failed to save:", result.message);
             }
