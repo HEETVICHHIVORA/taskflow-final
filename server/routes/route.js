@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 
 const {signup,login}=require('../controllers/auth');
-const {createteam,createtask,createcomment,getGroups,sendToGroup,getAllTasks,getallusers,createNewTeam}=require('../controllers/group');
+const {createteam,createtask,createcomment,getGroups,sendToGroup,getAllTasks,getallusers,createNewTeam,sendToGroupPlaintext}=require('../controllers/group');
 const {auth}=require('../middlewares/auth');
 
 
@@ -15,6 +15,7 @@ router.post("/createcomment",createcomment)
 
 router.get('/getteams',auth,getGroups);
 router.post('/sendToGroup',auth,sendToGroup);
+router.post('/sendToGroupPlaintext',auth,sendToGroupPlaintext);
 router.get('/getAllTasks',getAllTasks);
 
 router.get('/getallusers',auth,getallusers);

@@ -2,7 +2,7 @@ const User = require("../models/user");
 const groupschema = require("../models/group");
 const taskschema = require("../models/task");
 const commentschema = require("../models/comment");
-
+const taskschema2=require("../models/task");
 
 exports.createteam = async (req, res) => {
     try {
@@ -183,24 +183,68 @@ exports.createteam = async (req, res) => {
     });
     }
   }
-  
-  exports.getallusers=async(req,res)=>{
+  exports.sendToGroupPlaintext=async(req,res)=>{
     try{
-      const users = await User.find({}, 'name'); 
-      // console.log("ALL : " , users);
-      // console.log("REQ : " ,req.user.name);
+      const {groupName, filename,contentofpost}=req.body;
+      const payload=req.payload;
+      const userid=payload.id;
 
-      const filteredUsers=users.filter(user=>user.name!==req.user.name);
+      const user=await User.findById(userid);
+
+     console.log("user mil gaya ")
+      const textdoc = new taskschema2({
+          filename: filename,
+          contentofpost:contentofpost,
+          createdBy:user._id
+      });
+
+      const savedTask=await textdoc.save();
+      console.log(savedTask._id);
+      await groupschema.findOneAndUpdate({name:groupName},{$push:{tasks:savedTask._id}},{new:true});
+
       return res.status(200).json({
         success:true,
-        message:"All users fetched successully",
-        allusers:filteredUsers
+        message:"Task added successfully"
+      })
+
+    }
+    catch(e){
+      res.status(500).json({
+          success: false,
+          message: "Failed to send text",
+          error: e.message
+      });
+    }
+  }
+
+  exports.getAllTasks=async(req,res)=>{
+    try{
+      const groupName = req.query.name;
+      const group=await groupschema.findOne({name:groupName}).populate('tasks');
+
+      const audioDataArray=group.tasks.map(audioDoc => ({
+        filename: audioDoc.filename,
+        mimeType: audioDoc.mimeType,
+        base64Audio: audioDoc.audioData.toString('base64'),
+    }));
+
+
+      return res.json({
+        success:true,
+        message:"All tasks are fetched",
+        audioData: audioDataArray
       })
     }
     catch(e){
-      console.log(e);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch tasks",
+        error: e.message
+    });
     }
   }
+  
+  
 
   exports.createNewTeam=async(req,res)=>{
     try{
@@ -247,5 +291,23 @@ exports.createteam = async (req, res) => {
         message: "Failed to create new Group",
         error: e.message
     });
+    }
+  }
+
+  exports.getallusers=async(req,res)=>{
+    try{
+      const users = await User.find({}, 'name'); 
+      // console.log("ALL : " , users);
+      // console.log("REQ : " ,req.user.name);
+
+      const filteredUsers=users.filter(user=>user.name!==req.user.name);
+      return res.status(200).json({
+        success:true,
+        message:"All users fetched successully",
+        allusers:filteredUsers
+      })
+    }
+    catch(e){
+      console.log(e);
     }
   }

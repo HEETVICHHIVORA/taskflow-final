@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
  const Homepage=()=>{
 
     const [addbtn,setaddbtn]=useState(false);
+    const [addbtnfortext,setaddbtnfortext]=useState(false);
     const [createTeam,setcreateTeam]=useState(false);
     const [tasks,settasks]=useState([]);
 
@@ -31,12 +32,13 @@ import { useEffect, useState } from "react";
 
     return (
     <div className="w-screen h-screen overflow-x-hidden">
-    <Appbar addbtn={addbtn} createTeam={createTeam}/>
+    <Appbar addbtnfortext={addbtnfortext} addbtn={addbtn} createTeam={createTeam}/>
     <div className="flex justify-between">
-    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn}></Sidebar>
+    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext}></Sidebar>
     <Chatbox tasks={tasks}></Chatbox>
     </div>
-    </div>)
+    </div>
+    )
     
 }
 

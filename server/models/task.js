@@ -28,8 +28,24 @@ const taskschema=mongoose.Schema({
     }
 
 })
-
-
-
+const taskschema2=mongoose.Schema({
+  filename: {
+      type: String,
+      required: true,
+    },
+    contentofpost:{
+      type:String,
+      required:true,
+    },
+    uploadDate: {
+      type: Date,
+      default: Date.now,
+    },
+  createdBy: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
+  }
+})
 module.exports=mongoose.model('taskschema',taskschema);
-
+module.exports=mongoose.model('taskschema2',taskschema2);
