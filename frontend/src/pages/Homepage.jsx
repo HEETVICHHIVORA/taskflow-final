@@ -2,6 +2,8 @@ import {Sidebar} from "../components/Sidebar"
 import { Appbar } from "../components/Appbar";
 import Chatbox from "../components/Chatbox"
 import { useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
  const Homepage=()=>{
 
@@ -9,21 +11,26 @@ import { useEffect, useState } from "react";
     const [addbtnfortext,setaddbtnfortext]=useState(false);
     const [createTeam,setcreateTeam]=useState(false);
     const [tasks,settasks]=useState([]);
+    const {setloader}=useContext(AppContext);
+    const [currUser,setcurrUser]=useState("");
 
     async function authz() {
+        setloader(true)
         try{
             const response=await fetch('http://localhost:4000/getRole',{
                 credentials:'include'
             })
 
             const result=await response.json();
-            if(result.success && result.role==='manager'){
-                setcreateTeam(true);
+            if(result.success){
+                setcurrUser(result.name);
+                if(result.role==='manager')setcreateTeam(true);
             }
         }
         catch(e){
             console.log(e);
         }
+        setloader(false)
     }
 
     useEffect(()=>{
@@ -35,7 +42,7 @@ import { useEffect, useState } from "react";
     <Appbar addbtnfortext={addbtnfortext} addbtn={addbtn} createTeam={createTeam}/>
     <div className="flex justify-between">
     <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext}></Sidebar>
-    <Chatbox tasks={tasks}></Chatbox>
+    <Chatbox tasks={tasks} currUser={currUser}></Chatbox>
     </div>
     </div>
     )

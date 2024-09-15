@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 
 const {signup,login}=require('../controllers/auth');
-const {createteam,createtask,createcomment,getGroups,sendToGroup,getAllTasks,getallusers,createNewTeam,sendToGroupPlaintext}=require('../controllers/group');
+const {createteam,createtask,createcomment,getGroups,sendToGroup,getAllTasks,getallusers,createNewTeam,searchGroups,sendToGroupPlaintext}=require('../controllers/group');
 const {auth}=require('../middlewares/auth');
 
 
@@ -17,6 +17,7 @@ router.get('/getteams',auth,getGroups);
 router.post('/sendToGroup',auth,sendToGroup);
 router.post('/sendToGroupPlaintext',auth,sendToGroupPlaintext);
 router.get('/getAllTasks',getAllTasks);
+router.post('/searchGroups',auth,searchGroups);
 
 router.get('/getallusers',auth,getallusers);
 
@@ -46,7 +47,8 @@ router.get('/logout',(req,res)=>{
 router.get('/getRole',auth,(req,res)=>{
     return res.json({
         success:true,
-        role:req.user.role
+        role:req.user.role,
+        name:req.user.name
     })
 })
 

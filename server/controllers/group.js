@@ -160,12 +160,21 @@ exports.createteam = async (req, res) => {
   exports.getAllTasks=async(req,res)=>{
     try{
       const groupName = req.query.name;
-      const group=await groupschema.findOne({name:groupName}).populate('tasks');
+      const group = await groupschema.findOne({ name: groupName })
+       .populate({
+    path: 'tasks', // First populate the 'tasks'
+    populate: { 
+      path: 'createdBy', // Then populate the 'createdBy' field inside 'tasks'
+      select: 'name' // Only fetch the 'name' field of the user
+    }
+  });
+
 
       const audioDataArray=group.tasks.map(audioDoc => ({
         filename: audioDoc.filename,
         mimeType: audioDoc.mimeType,
         base64Audio: audioDoc.audioData.toString('base64'),
+        sender:audioDoc.createdBy.name
     }));
 
 
@@ -184,6 +193,76 @@ exports.createteam = async (req, res) => {
     }
   }
   exports.sendToGroupPlaintext=async(req,res)=>{
+    try{
+      const {groupName, filename,contentofpost}=req.body;
+      const payload=req.payload;
+      const userid=payload.id;
+
+      const user=await User.findById(userid);
+
+     console.log("user mil gaya ")
+      const textdoc = new taskschema2({
+          filename: filename,
+          contentofpost:contentofpost,
+          createdBy:user._id
+      });
+
+      const savedTask=await textdoc.save();
+      console.log(savedTask._id);
+      await groupschema.findOneAndUpdate({name:groupName},{$push:{tasks:savedTask._id}},{new:true});
+
+      return res.status(200).json({
+        success:true,
+        message:"Task added successfully"
+      })
+
+    }
+    catch(e){
+      res.status(500).json({
+          success: false,
+          message: "Failed to send text",
+          error: e.message
+      });
+    }
+  }
+
+  exports.getAllTasks=async(req,res)=>{
+    try{
+      const groupName = req.query.name;
+      const group = await groupschema.findOne({ name: groupName })
+       .populate({
+    path: 'tasks', // First populate the 'tasks'
+    populate: { 
+      path: 'createdBy', // Then populate the 'createdBy' field inside 'tasks'
+      select: 'name' // Only fetch the 'name' field of the user
+    }
+  });
+
+
+      const audioDataArray=group.tasks.map(audioDoc => ({
+        filename: audioDoc.filename,
+        mimeType: audioDoc.mimeType,
+        base64Audio: audioDoc.audioData.toString('base64'),
+        sender:audioDoc.createdBy.name
+    }));
+
+
+      return res.json({
+        success:true,
+        message:"All tasks are fetched",
+        audioData: audioDataArray
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch tasks",
+        error: e.message
+    });
+    }
+  }
+  
+  exports.getallusers=async(req,res)=>{
     try{
       const {groupName, filename,contentofpost}=req.body;
       const payload=req.payload;
@@ -309,5 +388,38 @@ exports.createteam = async (req, res) => {
     }
     catch(e){
       console.log(e);
+    }
+  }
+
+  exports.searchGroups=async(req,res)=>{
+    try{
+
+        const {prefix}=req.body;
+        const payload=req.payload;
+
+        const userid=payload.id;
+
+        const user=await User.findById(userid).populate("group");
+
+        if(!user){
+            return res.json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        const groups=user.group;
+
+        const filteredGroups = groups.filter(group=> group.name.toLowerCase().includes(prefix.toLowerCase()));
+        // console.log("Groups for " , prefix ," : " , filteredGroups);
+
+        return res.json({
+          success:true,
+          message:"Successfully extracted searched groups",
+          groups:filteredGroups
+        })
+    }
+    catch(e){
+        console.log(e);
     }
   }

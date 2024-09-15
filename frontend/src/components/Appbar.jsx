@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
 export const Appbar=({addbtnfortext,addbtn,createTeam})=>{
 
+    const {setloader}=useContext(AppContext);
     const navigate=useNavigate();
 
     async function logout(){
+        setloader(true)
         try{
             const response=await fetch('http://localhost:4000/logout',{
                 method:'GET',
@@ -24,6 +28,7 @@ export const Appbar=({addbtnfortext,addbtn,createTeam})=>{
         catch(e){
             console.error(e);
         }
+        setloader(false)
     }
 
     return <div className="border-b flex justify-between px-10 py-4">
@@ -36,7 +41,7 @@ export const Appbar=({addbtnfortext,addbtn,createTeam})=>{
         {createTeam ? <button onClick={()=>{navigate('/createteam')}}>CREATE TEAM</button> :""}
         {addbtnfortext ? <button onClick={()=>{navigate('/createtext')}}>ADD TASK-TEXT</button> :""}
         <button onClick={logout}>Log out</button>
-        
-        
+    
+
     </div>
 }
