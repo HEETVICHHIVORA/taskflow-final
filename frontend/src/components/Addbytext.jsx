@@ -1,9 +1,13 @@
-import axios from "axios"
-import { ChangeEvent, useState } from "react"
-import { useNavigate } from "react-router-dom"
 
+import { useRef, useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom"
+import {AppContext} from "../context/AppContext"
+import {toast} from "react-hot-toast";
 
 export const Addbytext =()=>{
+    const {teamName}=useContext(AppContext);
+    const navigate=useNavigate();
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     return    <div>
@@ -21,23 +25,42 @@ export const Addbytext =()=>{
     <Texteditor onChange={(e) => setDescription(e.target.value)} />
     <div className="max-w-screen-lg w-full flex justify-center">
       {/* Uncomment and adjust the following button logic as needed */}
-      {/* <button
+      <button
         onClick={async () => {
-          const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
-            title,
-            content: description
-          }, {
-            headers: {
-              Authorization: localStorage.getItem("token")
+          const textData = {
+            filename:'text.txt',
+            contentofpost:description,
+            groupName:teamName
+          }
+          try{
+            const response = await fetch('http://localhost:4000/sendToGroupPlaintext',{
+              method:'POST',
+              headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(textData),
+            credentials:'include'
+            });
+            const result = await response.json();
+            console.log(result);
+            if (result.success) {
+                // console.log("Audio saved successfully:", result.audioDoc);
+             //   toast.success(result.error);
+                navigate('/home');
+            } else {
+                console.error("Failed to save text:", result.error);
             }
-          });
-          navigate(`/blog/${response.data.id}`);
+
+          }
+          catch(error){
+            console.error("Error saving audio:", error);
+          }
         }}
         type="button"
         className="flex justify-center mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Post
-      </button> */}
+      </button>
     </div>
   </div>
 </div>
@@ -65,5 +88,3 @@ function Texteditor({ onChange }) {
     </form>
   );
 }
-
-  

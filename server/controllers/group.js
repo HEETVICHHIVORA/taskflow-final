@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const groupschema = require("../models/group");
-const taskschema = require("../models/task");
+const {taskschema,taskschema2}=require("../models/task");
 const commentschema = require("../models/comment");
 
 
@@ -289,5 +289,37 @@ exports.createteam = async (req, res) => {
     }
     catch(e){
         console.log(e);
+    }
+  }
+
+  exports.sendToGroupPlaintext=async(req,res)=>{
+    try{
+      
+      const {groupName, filename,contentofpost}=req.body;
+      const userid=req.user._id;
+
+      const textdoc = new taskschema2({
+          filename: filename,
+          contentofpost:contentofpost,
+          createdBy:userid
+      });
+
+
+
+       const savedTask=await textdoc.save();
+      await groupschema.findOneAndUpdate({name:groupName},{$push:{tasks:savedTask._id}},{new:true});
+
+      return res.status(200).json({
+        success:true,
+        message:"Task added successfully"
+      })
+
+    }
+    catch(e){
+      res.status(500).json({
+          success: false,
+          message: "Failed to send text",
+          error: e.message
+      });
     }
   }

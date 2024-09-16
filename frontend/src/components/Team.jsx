@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import {AppContext} from "../context/AppContext"
 
-export const Team =({group,tasks,settasks,setaddbtn})=>{
+export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
 
     const {setTeamName}=useContext(AppContext);
     const {setloader}=useContext(AppContext);
@@ -11,6 +11,7 @@ export const Team =({group,tasks,settasks,setaddbtn})=>{
         setTeamName(group.name);
         setaddbtn(true);
         setloader(true)
+        setaddbtnfortext(true)
         try {
             const response = await fetch(`http://localhost:4000/getAllTasks?name=${group.name}`);
             const result = await response.json();

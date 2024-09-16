@@ -9,6 +9,7 @@ import { useContext } from "react";
 
     const [addbtn,setaddbtn]=useState(false);
     const [createTeam,setcreateTeam]=useState(false);
+    const [addbtnfortext,setaddbtnfortext]=useState(false);
     const [tasks,settasks]=useState([]);
     const {setloader}=useContext(AppContext);
     const [currUser,setcurrUser]=useState("");
@@ -38,9 +39,9 @@ import { useContext } from "react";
 
     return (
     <div className="w-screen h-screen overflow-x-hidden">
-    <Appbar addbtn={addbtn} createTeam={createTeam}/>
+    <Appbar addbtn={addbtn} createTeam={createTeam} addbtnfortext={addbtnfortext}/>
     <div className="flex justify-between">
-    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn}></Sidebar>
+    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext}></Sidebar>
     <Chatbox tasks={tasks} currUser={currUser}></Chatbox>
     </div>
     </div>)

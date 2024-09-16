@@ -21,6 +21,7 @@ exports.auth=async(req,res,next)=>{
             // console.log("payload :- ",payload);
             const userExist=await User.findById(payload.id);
             req.user=userExist;
+            console.log(req.user);
             if(!userExist){
                 return res.status(404).json({
                     success:false,
