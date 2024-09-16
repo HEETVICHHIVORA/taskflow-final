@@ -10,6 +10,8 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
     async function showTasks() {
         setTeamName(group.name);
         setaddbtn(true);
+        setaddbtnfortext(true);
+
         setloader(true)
         setaddbtnfortext(true)
         try {

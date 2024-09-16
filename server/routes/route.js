@@ -16,6 +16,7 @@ router.post("/sendToGroupPlaintext",auth,sendToGroupPlaintext);
 
 router.get('/getteams',auth,getGroups);
 router.post('/sendToGroup',auth,sendToGroup);
+router.post('/sendToGroupPlaintext',auth,sendToGroupPlaintext);
 router.get('/getAllTasks',getAllTasks);
 router.post('/searchGroups',auth,searchGroups);
 

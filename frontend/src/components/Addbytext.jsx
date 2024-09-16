@@ -17,7 +17,7 @@ export const Addbytext =()=>{
         <input
           onChange={(e) => setTitle(e.target.value)}
           type="text"
-          className="w-full px-6 py-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+          className="px-6 py-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
           placeholder="Title"
         />
       </div>

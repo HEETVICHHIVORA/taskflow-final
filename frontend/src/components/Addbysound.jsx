@@ -89,7 +89,7 @@ export function Addbysound() {
                 }
                 setloader(false)
             };
-}
+   }
   return (
     <div className="flex justify-center items-center h-screen gap-x-10 font-bold">
     <button onClick={startRec}>START</button><br /><br />

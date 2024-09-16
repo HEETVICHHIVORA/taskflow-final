@@ -8,8 +8,8 @@ import { useContext } from "react";
  const Homepage=()=>{
 
     const [addbtn,setaddbtn]=useState(false);
-    const [createTeam,setcreateTeam]=useState(false);
     const [addbtnfortext,setaddbtnfortext]=useState(false);
+    const [createTeam,setcreateTeam]=useState(false);
     const [tasks,settasks]=useState([]);
     const {setloader}=useContext(AppContext);
     const [currUser,setcurrUser]=useState("");
@@ -44,7 +44,8 @@ import { useContext } from "react";
     <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext}></Sidebar>
     <Chatbox tasks={tasks} currUser={currUser}></Chatbox>
     </div>
-    </div>)
+    </div>
+    )
     
 }
 
