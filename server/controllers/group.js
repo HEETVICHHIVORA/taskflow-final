@@ -115,7 +115,15 @@ const {taskschema}=require("../models/task");
         console.log(e);
     }
   }
-
+  exports.deletechat =async(req,res)=>{
+    try {
+       const {taskid}=req.body;
+       const result = await taskschema.findByIdAndDelete(taskid);
+    }
+    catch{
+       console.log(e);
+    }
+  }
   // exports.sendToGroupPlaintext=async(req,res)=>{
   //   try{
       

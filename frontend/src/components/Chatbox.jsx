@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import Message from "./message";
 
 
 const Chatbox=({tasks,currUser})=>{
@@ -16,10 +17,13 @@ const Chatbox=({tasks,currUser})=>{
                 {tasks.length > 0 ? (
                 <div className="flex flex-col gap-y-5 p-5">
                     {tasks.map((task, index) => (
+                        
                         <div key={index} className={`flex flex-col justify-center gap-y-2 ${currUser==task.name ? 'items-end' : 'items-start'}`}>
-                            {currUser!=task.name && <p className="text-lg font-bold text-red-400">{task.name}</p>}
+                            {/* {currUser!=task.name && <p className="text-lg font-bold text-red-400">{task.name}</p>}
                             {task.url?.length>0 && <audio controls src={task.url}/>}
-                            {task.msg?.length>0 && <p className="bg-white p-2 max-w-[50%] text-lg rounded-md break-words border-slate-300 border-2">{task.msg}</p>}
+                            {task.msg?.length>0 && <p className="bg-white p-2 max-w-[50%] text-lg rounded-md break-words border-slate-300 border-2">{task.msg}</p>} */}
+                            {task.name}
+                            <Message taskmessage={task.msg} currUser={currUser} taskname={task.name} taskurl={task.url}></Message>
                         </div>
                     ))}
                 </div>
