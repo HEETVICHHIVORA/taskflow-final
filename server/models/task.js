@@ -26,7 +26,11 @@ const taskschema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
         required: true 
-    }
+    },
+    contentofpost: {
+        type: String,
+        required: true,
+    },
 });
 
 // taskschema2 for handling text content

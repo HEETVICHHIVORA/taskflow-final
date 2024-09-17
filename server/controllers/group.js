@@ -256,7 +256,13 @@ exports.createteam = async (req, res) => {
         message: "Failed to create new Group",
         error: e.message
     });
-    }
+
+    return res.status(200).json({
+      Name:"Paras Waghela",
+      role:"Full Stack Developer"
+    })
+  
+  }
   }
 
   exports.searchGroups=async(req,res)=>{
