@@ -1,12 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const groupschema = require("../models/group");
-const taskschema = require("../models/task");
-const commentschema = require("../models/comment");
-
-const { Admin } = require("mongodb");
-const group = require("../models/group");
 
 
 exports.signup = async (req, res) => {

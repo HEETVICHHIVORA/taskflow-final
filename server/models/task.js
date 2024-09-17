@@ -4,19 +4,17 @@ const mongoose = require('mongoose');
 const taskschema = mongoose.Schema({
     filename: {
         type: String,
-        required: true,
+        default:""
     },
     mimeType: {
         type: String,
-        required: true,
+        default:""
     },
     size: {
-        type: Number,
-        required: true,
+        type: Number
     },
     audioData: {
-        type: Buffer, 
-        required: true,
+        type: Buffer
     },
     uploadDate: {
         type: Date,
@@ -29,33 +27,32 @@ const taskschema = mongoose.Schema({
     },
     contentofpost: {
         type: String,
-        required: true,
+        default:""
     },
 });
 
 // taskschema2 for handling text content
-const taskschema2 = mongoose.Schema({
-    filename: {
-        type: String,
-        required: true,
-    },
-    contentofpost: {
-        type: String,
-        required: true,
-    },
-    uploadDate: {
-        type: Date,
-        default: Date.now,
-    },
-    createdBy: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', 
-        required: true 
-    }
-});
+// const taskschema2 = mongoose.Schema({
+//     filename: {
+//         type: String,
+//         required: true,
+//     },
+//     contentofpost: {
+//         type: String,
+//         required: true,
+//     },
+//     uploadDate: {
+//         type: Date,
+//         default: Date.now,
+//     },
+//     createdBy: { 
+//         type: mongoose.Schema.Types.ObjectId, 
+//         ref: 'User', 
+//         required: true 
+//     }
+// });
 
 // Export both schemas with the names `taskschema` and `taskschema2`
 module.exports = {
-    taskschema: mongoose.model('taskschema', taskschema),
-    taskschema2: mongoose.model('taskschema2', taskschema2)
+    taskschema: mongoose.model('taskschema', taskschema)
 };

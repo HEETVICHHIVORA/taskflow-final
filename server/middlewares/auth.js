@@ -19,9 +19,9 @@ exports.auth=async(req,res,next)=>{
             // console.log(payload);
             req.payload=payload;
             // console.log("payload :- ",payload);
-            const userExist=await User.findById(payload.id);
+            const userExist=await User.findById(payload.id).populate("group");
             req.user=userExist;
-            console.log(req.user);
+            // console.log(req.user);
             if(!userExist){
                 return res.status(404).json({
                     success:false,

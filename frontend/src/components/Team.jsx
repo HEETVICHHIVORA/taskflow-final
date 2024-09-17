@@ -21,17 +21,25 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
             if (result.success) {
                 // Map through each audio record and convert it to a Blob URL
                 const audioDataArray = result.audioData.map(audio => {
-                    const audioBlob = new Blob([Uint8Array.from(atob(audio.base64Audio), c => c.charCodeAt(0))], { type: audio.mimeType });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    return {
-                        url: audioUrl,
-                        name: audio.sender, // Assuming you have a name or some identifier for each audio file
-                    };
+                    if(audio.content.length==0){
+                        const audioBlob = new Blob([Uint8Array.from(atob(audio.base64Audio), c => c.charCodeAt(0))], { type: audio.mimeType });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        return {
+                            url: audioUrl,
+                            name: audio.sender, // Assuming you have a name or some identifier for each audio file
+                        };
+                    }
+                    else{
+                        return {
+                            name:audio.sender,
+                            msg:audio.content
+                        }
+                    }
                 });
 
                 settasks(audioDataArray);
             } else {
-                console.error("Failed to fetch audio:", result.message);
+                console.error("Failed to fetch audio:", result.error);
             }
         } catch (error) {
             console.error("Error fetching audio:", error);

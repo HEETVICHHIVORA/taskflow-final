@@ -62,7 +62,8 @@ export function Addbysound() {
                     audioBlob: base64data,
                     filename: 'recording.wav',
                     mimeType: 'audio/wav',
-                    groupName:teamName
+                    groupName:teamName,
+                    reqtype:'audio'
                 };
 
                 // Post the data to the server
@@ -82,7 +83,7 @@ export function Addbysound() {
                         toast.success(result.message);
                         navigate('/home');
                     } else {
-                        console.error("Failed to save audio:", result.message);
+                        console.error("Failed to save audio:", result.error);
                     }
                 } catch (error) {
                     console.error("Error saving audio:", error);
