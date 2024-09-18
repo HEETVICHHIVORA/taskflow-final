@@ -117,8 +117,14 @@ const {taskschema}=require("../models/task");
   }
   exports.deletechat =async(req,res)=>{
     try {
-       const {taskid}=req.body;
+       const {taskid,groupname}=req.body;
        const result = await taskschema.findByIdAndDelete(taskid);
+       const r2 = await groupschema.findOneAndUpdate({name:groupname},{$pull:{tasks:taskid}},{new:true});
+    
+       return res.json({
+        success:true,
+        message:" deleted",
+      })
     }
     catch{
        console.log(e);
@@ -211,9 +217,10 @@ const {taskschema}=require("../models/task");
     mimeType: audioDoc.mimeType,
     base64Audio: audioDoc.audioData ? audioDoc.audioData.toString('base64') : null, // Check if audioData exists before converting
     sender: audioDoc.createdBy.name, // Optional chaining to handle missing createdBy
-    content: audioDoc.contentofpost  // Default to null if contentofpost doesn't exist
+    content: audioDoc.contentofpost,
+    taskid:audioDoc._id,  // Default to null if contentofpost doesn't exist
   }));
-  
+  console.log(audioDataArray);
 
 
       return res.json({

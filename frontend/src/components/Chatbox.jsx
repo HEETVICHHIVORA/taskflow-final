@@ -22,8 +22,7 @@ const Chatbox=({tasks,currUser})=>{
                             {/* {currUser!=task.name && <p className="text-lg font-bold text-red-400">{task.name}</p>}
                             {task.url?.length>0 && <audio controls src={task.url}/>}
                             {task.msg?.length>0 && <p className="bg-white p-2 max-w-[50%] text-lg rounded-md break-words border-slate-300 border-2">{task.msg}</p>} */}
-                            {task.name}
-                            <Message taskmessage={task.msg} currUser={currUser} taskname={task.name} taskurl={task.url}></Message>
+                            <Message taskmessage={task.msg} currUser={currUser} taskname={task.name} taskurl={task.url} taskid={task.taskid}></Message>
                         </div>
                     ))}
                 </div>

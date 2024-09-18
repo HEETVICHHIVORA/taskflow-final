@@ -26,13 +26,15 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
                         const audioUrl = URL.createObjectURL(audioBlob);
                         return {
                             url: audioUrl,
-                            name: audio.sender, // Assuming you have a name or some identifier for each audio file
+                            name: audio.sender, 
+                            taskid:audio.taskid// Assuming you have a name or some identifier for each audio file
                         };
                     }
                     else{
                         return {
                             name:audio.sender,
-                            msg:audio.content
+                            msg:audio.content,
+                            taskid:audio.taskid
                         }
                     }
                 });
