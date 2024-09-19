@@ -2,11 +2,11 @@
 import { useContext } from "react";
 import {AppContext} from "../context/AppContext"
 
-export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
+export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam})=>{
 
     const {setTeamName}=useContext(AppContext);
     const {setloader}=useContext(AppContext);
-    const {role}= useContext(AppContext);
+   // const {role}= useContext(AppContext);
     async function deleteGroup() {
         try {
           const response = await fetch(`http://localhost:4000/deletegroup?groupid=${group._id}`, {
@@ -82,7 +82,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
                 </p>
             </div>
          </div>
-         {role === "manager" && (
+         {createteam  && (
         <div className="mt-2">
           <button
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"

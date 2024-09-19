@@ -5,7 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { useContext } from "react";
 
 
-export const Sidebar =({tasks,settasks,setaddbtn,setaddbtnfortext})=>{
+export const Sidebar =({tasks,settasks,setaddbtn,setaddbtnfortext,createteam})=>{
     const [groups,setgroups]=useState([]);
     const [isEmpty,setisEmpty]=useState(false);
     const {setloader}=useContext(AppContext);
@@ -53,7 +53,7 @@ export const Sidebar =({tasks,settasks,setaddbtn,setaddbtnfortext})=>{
         <Searchbar groups={groups} setgroups={setgroups}></Searchbar>
         {groups?.map((group,index)=>{
             return (
-                <Team group={group} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext}/>
+                <Team group={group} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext} createteam={createteam}/>
             )
         })}
         {isEmpty && <p className="text-xl text-center pt-[50%]">No any groups</p>}
