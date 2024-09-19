@@ -21,7 +21,15 @@ const {taskschema}=require("../models/task");
   }
 
 
-  
+  exports.deletegroup=async(req,red)=>{
+    try{
+      const groupid = req.query.groupid;
+      const result = await groupschema.findByIdAndDelete(groupid);
+    }
+    catch(e){
+       console.log(e);
+    }
+  }
   exports.getallusers=async(req,res)=>{
     try{
       const users = await User.find({}, 'name'); 

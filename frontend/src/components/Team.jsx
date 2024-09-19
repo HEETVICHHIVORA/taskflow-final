@@ -6,7 +6,27 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
 
     const {setTeamName}=useContext(AppContext);
     const {setloader}=useContext(AppContext);
-
+    const {role}= useContext(AppContext);
+    async function deleteGroup() {
+        try {
+          const response = await fetch(`http://localhost:4000/deletegroup?groupid=${group._id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+          });
+          const result = await response.json();
+          if (result.success) {
+            console.log("Group deleted successfully");
+            // Optionally, you could update the UI to remove the group from the list
+          } else {
+            console.error("Failed to delete group:", result.error);
+          }
+        } catch (error) {
+          console.error("Error deleting group:", error);
+        }
+      }
     async function showTasks() {
         setTeamName(group.name);
         setaddbtn(true);
@@ -62,5 +82,15 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext})=>{
                 </p>
             </div>
          </div>
+         {role === "manager" && (
+        <div className="mt-2">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+            onClick={deleteGroup}
+          >
+            Delete Group
+          </button>
+        </div>
+        )}
     </div>
 }

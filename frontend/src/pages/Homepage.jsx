@@ -13,6 +13,7 @@ import { useContext } from "react";
     const [tasks,settasks]=useState([]);
     const {setloader}=useContext(AppContext);
     const [currUser,setcurrUser]=useState("");
+    const {setrole} = useContext(AppContext);
 
     async function authz() {
         setloader(true)
@@ -24,6 +25,7 @@ import { useContext } from "react";
             const result=await response.json();
             if(result.success){
                 setcurrUser(result.name);
+                setrole(result.role);
                 if(result.role==='manager')setcreateTeam(true);
             }
         }
