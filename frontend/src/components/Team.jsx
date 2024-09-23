@@ -10,6 +10,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
     const {setloader}=useContext(AppContext);
    // const {role}= useContext(AppContext);
     async function deleteGroup() {
+      setloader(true)
         try {
           const response = await fetch(`http://localhost:4000/deletegroup?groupid=${group._id}`, {
             method: "POST",
@@ -28,6 +29,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
         } catch (error) {
           console.error("Error deleting group:", error);
         }
+        setloader(false);
       }
     async function showTasks() {
         setTeamName(group.name);
@@ -70,18 +72,20 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
         }
         setloader(false)
     }
-    return <div className="w-full px-3 hover:bg-slate-100 transition duration-200 cursor-pointer" onClick={showTasks}>
-    <div className="flex p-2 border-b-2">
-      <div className="bg-blue-200 rounded-full w-[12%] justify-center items-center mr-2 hidden lg:flex">
-        {/* You can add some content here if needed */}
+    return <div className="w-full px-3 hover:bg-slate-100 transition duration-200 cursor-pointer group" onClick={showTasks}>
+    <div className="flex p-2 border-b-2 justify-between items-center">
+<div className="w-full h-full flex">
+      <div className="rounded-full w-[12%] justify-center items-center mr-2 hidden lg:flex text-xl font-bold">
+        <img src="../public/voice-chat.png" alt="" />
       </div>
       <div>
         <p>{group.name}</p>
         <p>this is the last chat short.</p>
       </div>
+</div>
       
       {createteam && (
-        <div className="ml-auto mt-2">
+        <div className="group-hover:opacity-100 opacity-0 bg-red-200 rounded-full p-1 flex justify-center items-center hover:bg-red-300">
           <button onClick={deleteGroup}>
             <MdDelete className="text-red-500 text-xl" />
           </button>

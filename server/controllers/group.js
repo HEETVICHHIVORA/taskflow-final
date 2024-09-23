@@ -21,10 +21,28 @@ const {taskschema}=require("../models/task");
   }
 
 
-  exports.deletegroup=async(req,red)=>{
+  exports.deletegroup=async(req,res)=>{
     try{
       const groupid = req.query.groupid;
       const result = await groupschema.findByIdAndDelete(groupid);
+      const user=req.user;
+
+      for(let i=0;i<result.tasks.length;i++){
+        await taskschema.findByIdAndDelete(result.tasks[i]);
+      }
+
+      for(let i=0;i<result.members.length;i++){
+        await User.findByIdAndUpdate({_id:result.members[i]},
+          {$pull:{group:result._id}},
+          {new:true}
+        )
+      }
+
+      return res.json({
+        success:true,
+        message:"Group deleted successfully"
+    })
+
     }
     catch(e){
        console.log(e);
@@ -122,6 +140,27 @@ const {taskschema}=require("../models/task");
     catch(e){
         console.log(e);
     }
+  }
+
+  exports.searchUsers=async(req,res)=>{
+    try{
+      const {prefix}=req.body;
+      const user=req.user;
+
+      const users = await User.find({}, 'name'); 
+
+      const filteredUsers = users.filter(user=> user.name.toLowerCase().includes(prefix.toLowerCase()) && user.name!==req.user.name);
+      // console.log("Groups for " , prefix ," : " , filteredGroups);
+
+      return res.json({
+        success:true,
+        message:"Successfully extracted searched users",
+        users:filteredUsers
+      })
+  }
+  catch(e){
+      console.log(e);
+  }
   }
   exports.deletechat =async(req,res)=>{
     try {
@@ -228,7 +267,7 @@ const {taskschema}=require("../models/task");
     content: audioDoc.contentofpost,
     taskid:audioDoc._id,  // Default to null if contentofpost doesn't exist
   }));
-  console.log(audioDataArray);
+  // console.log(audioDataArray);
 
 
       return res.json({
@@ -245,3 +284,5 @@ const {taskschema}=require("../models/task");
     });
     }
   }
+
+  

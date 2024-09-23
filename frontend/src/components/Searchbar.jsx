@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
-export const Searchbar=({groups,setgroups})=>{
+export const Searchbar=({setgroups})=>{
 
     const [searchInput,setsearchInput]=useState("");
 

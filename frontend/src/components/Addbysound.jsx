@@ -32,7 +32,7 @@ export function Addbysound() {
               const audioUrl = URL.createObjectURL(audioBlob);
               setcopy(audioBlob);
 
-              setRecordings((prev) => [...prev, audioUrl]);
+              setRecordings((prev) => [audioUrl]);
 
               // Convert Blob to Base64
           };
