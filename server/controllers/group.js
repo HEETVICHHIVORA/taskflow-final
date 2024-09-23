@@ -31,11 +31,12 @@ const {taskschema}=require("../models/task");
         await taskschema.findByIdAndDelete(result.tasks[i]);
       }
 
-
-      await User.findByIdAndUpdate({_id:user._id},
-        {$pull:{group:result._id}},
-        {new:true}
-      )
+      for(let i=0;i<result.members.length;i++){
+        await User.findByIdAndUpdate({_id:result.members[i]},
+          {$pull:{group:result._id}},
+          {new:true}
+        )
+      }
 
       return res.json({
         success:true,
