@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 
 import {toast} from "react-hot-toast";
 import { AppContext } from '../context/AppContext';
+import { MdDelete } from 'react-icons/md';
 
 
 const Message = ({
@@ -35,23 +36,21 @@ const Message = ({
   }
   }
   return (
-    <div className=' flex flex-col justify-center gap-y-2 group'>
+    <div className='flex flex-col justify-center gap-y-2 group'>
         <div>
            {currUser !== taskname && <p className="text-lg font-bold text-red-400">{taskname}</p>}
         </div>
-        <div>
+        <div className='flex items-center gap-x-2 flex-row-reverse'>
             <div>
             {taskurl?.length > 0 && <audio controls src={taskurl} />}
             {taskmessage?.length > 0 && <p className="bg-white p-2 max-w-[50%] text-lg rounded-md break-words border-slate-300 border-2">{taskmessage}</p>}
             </div>
-            <div className=' opacity-0 group-hover:opacity-100 transition-opacity'>
-            <button onClick={deletechat} className="bg-slate-400  text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none m-2 ">
-                Delete
-            </button>
-            </div>
+            {currUser===taskname && <div className=' opacity-0 group-hover:opacity-100 transition-opacity rounded-full bg-red-100 p-1 cursor-pointer hover:bg-red-200'>
+            <MdDelete onClick={deletechat} className="text-red-500 text-xl">
+            </MdDelete>
+            </div>}
           
         </div>
-    
     </div>
    
     

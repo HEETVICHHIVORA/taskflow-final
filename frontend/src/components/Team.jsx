@@ -72,7 +72,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
         }
         setloader(false)
     }
-    return <div className="w-full px-3 hover:bg-slate-100 transition duration-200 cursor-pointer" onClick={showTasks}>
+    return <div className="w-full px-3 hover:bg-slate-100 transition duration-200 cursor-pointer group" onClick={showTasks}>
     <div className="flex p-2 border-b-2 justify-between items-center">
 <div className="w-full h-full flex">
       <div className="rounded-full w-[12%] justify-center items-center mr-2 hidden lg:flex text-xl font-bold">
@@ -85,7 +85,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
 </div>
       
       {createteam && (
-        <div className="">
+        <div className="group-hover:opacity-100 opacity-0 bg-red-200 rounded-full p-1 flex justify-center items-center hover:bg-red-300">
           <button onClick={deleteGroup}>
             <MdDelete className="text-red-500 text-xl" />
           </button>

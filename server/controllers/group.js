@@ -141,6 +141,27 @@ const {taskschema}=require("../models/task");
         console.log(e);
     }
   }
+
+  exports.searchUsers=async(req,res)=>{
+    try{
+      const {prefix}=req.body;
+      const user=req.user;
+
+      const users = await User.find({}, 'name'); 
+
+      const filteredUsers = users.filter(user=> user.name.toLowerCase().includes(prefix.toLowerCase()) && user.name!==req.user.name);
+      // console.log("Groups for " , prefix ," : " , filteredGroups);
+
+      return res.json({
+        success:true,
+        message:"Successfully extracted searched users",
+        users:filteredUsers
+      })
+  }
+  catch(e){
+      console.log(e);
+  }
+  }
   exports.deletechat =async(req,res)=>{
     try {
        const {taskid,groupname}=req.body;
@@ -246,7 +267,7 @@ const {taskschema}=require("../models/task");
     content: audioDoc.contentofpost,
     taskid:audioDoc._id,  // Default to null if contentofpost doesn't exist
   }));
-  console.log(audioDataArray);
+  // console.log(audioDataArray);
 
 
       return res.json({
@@ -263,3 +284,5 @@ const {taskschema}=require("../models/task");
     });
     }
   }
+
+  
