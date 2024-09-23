@@ -41,9 +41,9 @@ function Home() {
                 <div className="container mx-auto px-5 py-2 flex items-center justify-between">
                     <a href="#" className="flex items-center space-x-4">
                         <img
-                            src="https://logodix.com/logo/652004.jpg"
+                            src="../public/image.png"
                             alt="Logo"
-                            className="w-14 h-14 rounded-full"
+                            className="w-10 h-10 rounded-full"
                         />
                         <span className="text-3xl md:text-4xl lg:text-4 xl font-poppins font-bold">TaskFlo</span>
                     </a>
