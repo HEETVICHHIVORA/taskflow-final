@@ -8,6 +8,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
     const {setloader}=useContext(AppContext);
    // const {role}= useContext(AppContext);
     async function deleteGroup() {
+      setloader(true)
         try {
           const response = await fetch(`http://localhost:4000/deletegroup?groupid=${group._id}`, {
             method: "POST",
@@ -26,6 +27,7 @@ export const Team =({group,tasks,settasks,setaddbtn,setaddbtnfortext,createteam}
         } catch (error) {
           console.error("Error deleting group:", error);
         }
+        setloader(false);
       }
     async function showTasks() {
         setTeamName(group.name);

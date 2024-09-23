@@ -21,10 +21,27 @@ const {taskschema}=require("../models/task");
   }
 
 
-  exports.deletegroup=async(req,red)=>{
+  exports.deletegroup=async(req,res)=>{
     try{
       const groupid = req.query.groupid;
       const result = await groupschema.findByIdAndDelete(groupid);
+      const user=req.user;
+
+      for(let i=0;i<result.tasks.length;i++){
+        await taskschema.findByIdAndDelete(result.tasks[i]);
+      }
+
+
+      await User.findByIdAndUpdate({_id:user._id},
+        {$pull:{group:result._id}},
+        {new:true}
+      )
+
+      return res.json({
+        success:true,
+        message:"Group deleted successfully"
+    })
+
     }
     catch(e){
        console.log(e);
