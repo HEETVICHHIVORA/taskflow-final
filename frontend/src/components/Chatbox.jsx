@@ -11,7 +11,7 @@ const Chatbox = ({ tasks, currUser }) => {
 
   return (
     <div className="w-full md:w-[65%] flex-col h-screen bg-red-50 overflow-y-auto"> 
-      <div className={`w-full flex justify-center items-center py-5 text-3xl font-semibold ${teamName.length > 0 ? 'bg-green-300' : 'bg-none'}`}>
+      <div className={`w-full flex flex-col justify-center items-center py-5 text-3xl font-semibold ${teamName.length > 0 ? 'bg-green-300' : 'bg-none'}`}>
         {teamName}
       </div>
       {tasks.length > 0 ? (
