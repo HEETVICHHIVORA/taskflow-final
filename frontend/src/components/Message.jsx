@@ -3,8 +3,8 @@ import { toast } from "react-hot-toast";
 import { AppContext } from '../context/AppContext';
 import { MdDelete } from 'react-icons/md';
 
-const Message = ({ currUser, taskname, taskurl, taskmessage, taskid }) => {
-  const { teamName } = useContext(AppContext);
+const Message = ({ currUser, taskname, taskurl, taskmessage, taskid,showTasks }) => {
+  const { teamName,setloader } = useContext(AppContext);
 
   async function deletechat() {
     try {
@@ -22,6 +22,7 @@ const Message = ({ currUser, taskname, taskurl, taskmessage, taskid }) => {
       const res = await response.json();
       if (res.success) {
         toast.success(res.message);
+        showTasks();
       } else {
         toast.error(res.message);
       }
@@ -30,6 +31,9 @@ const Message = ({ currUser, taskname, taskurl, taskmessage, taskid }) => {
       console.error(error);
     }
   }
+
+
+ 
 
   return (
     <div className='w-[90%] max-w-[50%] flex flex-col gap-y-2 group'>

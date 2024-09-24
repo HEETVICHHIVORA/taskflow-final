@@ -13,7 +13,7 @@ import { useContext } from "react";
     const [tasks,settasks]=useState([]);
     const {setloader}=useContext(AppContext);
     const [currUser,setcurrUser]=useState("");
-  //  const {setrole} = useContext(AppContext);
+    const {teamName}=useContext(AppContext);
 
     async function authz() {
         setloader(true)
@@ -37,14 +37,52 @@ import { useContext } from "react";
 
     useEffect(()=>{
         authz();
+        showTasks();
     },[])
+
+    async function showTasks() {
+    
+
+        setloader(true);
+        try {
+            const response = await fetch(`http://localhost:4000/getAllTasks?name=${teamName}`);
+            const result = await response.json();
+            console.log("from mesage " , result);
+            if (result.success) {
+                const audioDataArray = result.audioData.map(audio => {
+                    if (audio.content.length === 0) {
+                        const audioBlob = new Blob([Uint8Array.from(atob(audio.base64Audio), c => c.charCodeAt(0))], { type: audio.mimeType });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        return {
+                            url: audioUrl,
+                            name: audio.sender,
+                            taskid: audio.taskid
+                        };
+                    } else {
+                        return {
+                            name: audio.sender,
+                            msg: audio.content,
+                            taskid: audio.taskid
+                        };
+                    }
+                });
+    
+                settasks(audioDataArray);
+            } else {
+                console.error("Failed to fetch audio:", result.error);
+            }
+        } catch (error) {
+            console.error("Error fetching audio:", error);
+        }
+        setloader(false);
+    }
 
     return (
     <div className="w-screen h-screen overflow-x-hidden">
     <Appbar addbtn={addbtn} createTeam={createTeam} addbtnfortext={addbtnfortext}/>
     <div className="flex justify-between">
     <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext} createteam={createTeam}></Sidebar>
-    <Chatbox tasks={tasks} currUser={currUser}></Chatbox>
+    <Chatbox tasks={tasks} showTasks={showTasks} currUser={currUser} settasks={settasks} ></Chatbox>
     </div>
     </div>
     )

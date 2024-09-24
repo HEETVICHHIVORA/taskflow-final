@@ -65,6 +65,9 @@ function CreateTeam(){
                 toast.success(result.message)
                 navigate('/home')
             }
+            else{
+                toast.error(result.message)
+            }
         }
         catch(e){
             console.log(e);

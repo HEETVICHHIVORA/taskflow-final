@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import Message from "./Message";
 
-const Chatbox = ({ tasks, currUser }) => {
+const Chatbox = ({ tasks, currUser ,settasks,showTasks}) => {
   useEffect(() => {
     console.log(tasks);
   }, [tasks]);
@@ -18,7 +18,7 @@ const Chatbox = ({ tasks, currUser }) => {
         <div className="flex flex-col gap-y-5 p-5">
           {tasks.map((task, index) => (
             <div key={index} className={`flex flex-col justify-center gap-y-2 ${currUser === task.name ? 'items-end' : 'items-start'}`}>
-              <Message taskmessage={task.msg} currUser={currUser} taskname={task.name} taskurl={task.url} taskid={task.taskid} />
+              <Message showTasks={showTasks} taskmessage={task.msg} currUser={currUser} taskname={task.name} taskurl={task.url} taskid={task.taskid} settasks={settasks} />
             </div>
           ))}
         </div>
