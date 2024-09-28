@@ -111,38 +111,52 @@ function CreateTeam(){
     },[searchInput])
 
     return (
-        <div className="w-screen bg-blue-50 h-screen flex flex-col items-center justify-center gap-y-10">
-            <p className="font-bold text-2xl"> New Team Name</p>
-            <input type="text"
-            className="p-2 outline-none"
-            value={newTeamName}
-            onChange={changeHandler}
-             />
+      <div className="w-screen bg-blue-50 h-screen flex flex-col items-center justify-center gap-y-10 p-4">
+  <h1 className="font-bold text-2xl text-center">New Team Name</h1>
+  <input
+    type="text"
+    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    value={newTeamName}
+    onChange={changeHandler}
+    placeholder="Enter team name"
+  />
 
-             <p>Search User</p>
-             <div className="w-[20%] mx-auto my-1  bg-slate-300 rounded-md px-2 py-1 flex gap-x-2 items-center border-r-2">
-                <IoIosSearch />
-                <div className="w-full">
-                <input 
-                className="bg-transparent outline-none text-sm w-[100%]" placeholder="search" type="text" 
-                value={searchInput}
-                onInput={changeHandler2}/> 
-            </div>
-    </div>
+  <p className="mt-4 text-2xl font-bold ">Search User</p>
+  <div className="w-full max-w-md mx-auto my-2 bg-slate-300 rounded-md px-3 py-2 flex items-center border border-gray-300">
+    <IoIosSearch className="text-gray-600" />
+    <input
+      className="bg-transparent outline-none text-sm flex-grow ml-2"
+      placeholder="Search"
+      type="text"
+      value={searchInput}
+      onInput={changeHandler2}
+    />
+  </div>
 
-    <div className="h-[20%] flex flex-col gap-y-5 flex-wrap gap-x-5">
+  <div className="h-auto w-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-auto al justify-center align-middle">
     {allUsers ? (
-    allUsers.map((user, index) => (
-        <User user={user} key={index} newTeamMembers={newTeamMembers} setnewTeamMembers={setnewTeamMembers}/>
-    ))
-) : (
-    <p>Fetching users...</p>
-)}
-    </div>
+      allUsers.map((user, index) => (
+        <User
+          user={user}
+          key={index}
+          newTeamMembers={newTeamMembers}
+          setnewTeamMembers={setnewTeamMembers}
+        />
+      ))
+    ) : (
+      <p className="text-center">Fetching users...</p>
+    )}
+  </div>
 
-<button className="bg-green-500 p-2 font-bold rounded-lg" onClick={submitHandler}>Creat Team</button>
+  <button
+    className="mt-4 bg-green-500 text-white font-bold rounded-lg px-4 py-2 hover:bg-green-600 transition duration-200"
+    onClick={submitHandler}
+  >
+    Create Team
+  </button>
+</div>
 
-        </div>
+      
     )
 }
 
