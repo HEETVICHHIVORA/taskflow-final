@@ -2,9 +2,8 @@ import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { MdDelete } from "react-icons/md";
 
-export const Team = ({ group, tasks, settasks, setaddbtn, setaddbtnfortext, createteam }) => {
-    const { setTeamName } = useContext(AppContext);
-    const { setloader } = useContext(AppContext);
+export const Team = ({ group, tasks, settasks, setaddbtn, setaddbtnfortext, createteam ,setkickbtn}) => {
+    const { setTeamName,setloader} = useContext(AppContext);
 
     async function deleteGroup() {
         // setloader(true);
@@ -19,7 +18,6 @@ export const Team = ({ group, tasks, settasks, setaddbtn, setaddbtnfortext, crea
             const result = await response.json();
             if (result.success) {
                 console.log("Group deleted successfully");
-                // Optionally, update the UI to remove the group from the list
                 
             } else {
                 console.error("Failed to delete group:", result.error);
@@ -37,6 +35,7 @@ export const Team = ({ group, tasks, settasks, setaddbtn, setaddbtnfortext, crea
         localStorage.setItem('group',group.name);
         setaddbtn(true);
         setaddbtnfortext(true);
+        setkickbtn(true);
         setloader(true);
         try {
             const response = await fetch(`http://localhost:4000/getAllTasks?name=${group.name}`);

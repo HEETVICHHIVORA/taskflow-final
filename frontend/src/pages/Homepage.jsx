@@ -15,6 +15,8 @@ import { useContext } from "react";
     const [currUser,setcurrUser]=useState("");
     const {teamName}=useContext(AppContext);
 
+    const [kickbtn,setkickbtn]=useState(false);
+
     async function authz() {
         setloader(true)
         try{
@@ -38,6 +40,11 @@ import { useContext } from "react";
     useEffect(()=>{
         authz();
         showTasks();
+        if(teamName){
+            setaddbtnfortext(true);
+            setaddbtn(true);
+            setkickbtn(true);
+        }
     },[])
 
     async function showTasks() {
@@ -79,9 +86,9 @@ import { useContext } from "react";
 
     return (
     <div className="w-screen h-screen overflow-x-hidden">
-    <Appbar addbtn={addbtn} createTeam={createTeam} addbtnfortext={addbtnfortext}/>
+    <Appbar addbtn={addbtn} createTeam={createTeam} addbtnfortext={addbtnfortext} kickbtn={kickbtn}/>
     <div className="flex justify-between">
-    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext} createteam={createTeam}></Sidebar>
+    <Sidebar tasks={tasks} settasks={settasks} setaddbtn={setaddbtn} setaddbtnfortext={setaddbtnfortext} createteam={createTeam} setkickbtn={setkickbtn}></Sidebar>
     <Chatbox tasks={tasks} showTasks={showTasks} currUser={currUser} settasks={settasks} ></Chatbox>
     </div>
     </div>

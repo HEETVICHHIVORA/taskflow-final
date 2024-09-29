@@ -1,8 +1,7 @@
 const User = require("../models/user");
 const groupschema = require("../models/group");
 const {taskschema}=require("../models/task");
-
-
+const mongoose = require('mongoose');
 
   exports.getGroups=async(req,res)=>{
     try{
@@ -250,13 +249,20 @@ const {taskschema}=require("../models/task");
     try{
       const groupName = req.query.name;
       const group = await groupschema.findOne({ name: groupName })
-       .populate({
-    path: 'tasks', // First populate the 'tasks'
-    populate: { 
-      path: 'createdBy', // Then populate the 'createdBy' field inside 'tasks'
-      select: 'name' // Only fetch the 'name' field of the user
-    }
-  });
+      .populate([
+        {
+          path: 'tasks',
+          populate: {
+            path: 'createdBy',
+            select: 'name'
+          }
+        },
+        {
+          path: 'members' // Populate members in a separate object
+        }
+      ]);
+
+      const allmembers=group.members;
 
 
   const audioDataArray = group.tasks.map(audioDoc => ({
@@ -265,15 +271,16 @@ const {taskschema}=require("../models/task");
     base64Audio: audioDoc.audioData ? audioDoc.audioData.toString('base64') : null, // Check if audioData exists before converting
     sender: audioDoc.createdBy.name, // Optional chaining to handle missing createdBy
     content: audioDoc.contentofpost,
-    taskid:audioDoc._id,  // Default to null if contentofpost doesn't exist
+    taskid:audioDoc._id,  // Default to null if contentofpost doesn't exist,
   }));
-  // console.log(audioDataArray);
+  
 
 
       return res.json({
         success:true,
         message:"All tasks are fetched",
-        audioData: audioDataArray
+        audioData: audioDataArray,
+        allmembers:allmembers
       })
     }
     catch(e){
@@ -285,4 +292,60 @@ const {taskschema}=require("../models/task");
     }
   }
 
-  
+  exports.getgroupmembers=async(req,res)=>{
+    try{
+      const {teamName}=req.body;
+      const group=await groupschema.findOne({name:teamName}).populate('members');
+
+      const curruser=req.user;
+
+      const groupmembers=group.members.filter(member=> member.name!==curruser.name);
+
+      return res.status(200).json({
+        success:true,
+        message:"All groups members are fetched",
+        allmembers:groupmembers
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to get group members",
+        error: e.message
+    });
+    }
+  }
+
+  exports.removemember=async(req,res)=>{
+    try{
+      const {members,teamName}=req.body;
+
+
+      if(members.length==0){
+        return res.json({
+          success:false,
+          message:"Select atleast one user"
+        })
+      }
+      const group=await groupschema.findOne({name:teamName});
+
+      for(let i=0;i<members.length;i++){
+        const memberid=members[i].id;
+
+        await User.findByIdAndUpdate(memberid,{$pull:{group:group._id}},{new:true})
+        await groupschema.findOneAndUpdate({name:teamName},{$pull:{members:memberid}},{new:true})
+      }
+
+      return res.status(200).json({
+        success:true,
+        message:"Members kicked out successfully"
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to remove members",
+        error: e.message
+    });
+    }
+  }

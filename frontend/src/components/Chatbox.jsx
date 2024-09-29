@@ -11,7 +11,7 @@ const Chatbox = ({ tasks, currUser ,settasks,showTasks}) => {
 
   return (
     <div className="flex flex-col h-screen w-[calc(100%-300px)] bg-gray-50 overflow-y-auto shadow-lg"> {/* Adjusted width */}
-    <div className={`w-full flex flex-col justify-center items-center py-5 text-3xl font-semibold rounded-md transition-all duration-300 ${teamName.length > 0 ? 'bg-green-400 text-gray-800' : 'bg-gray-200 text-gray-600'}`}>
+    <div className={`w-full flex flex-col justify-center items-center py-5 text-3xl font-semibold rounded-md transition-all duration-300 ${teamName.length > 0 ? 'bg-green-200 text-gray-800' : 'bg-gray-200 text-gray-600'}`}>
       {teamName.length > 0 ? teamName : "No Team Selected"}
     </div>
 

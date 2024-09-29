@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { useContext } from "react";
 
-export const Appbar=({addbtn,createTeam,addbtnfortext})=>{
+export const Appbar=({addbtn,createTeam,addbtnfortext,kickbtn})=>{
 
     const {setloader}=useContext(AppContext);
     const navigate=useNavigate();
@@ -59,6 +59,14 @@ export const Appbar=({addbtn,createTeam,addbtnfortext})=>{
           className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-full transition duration-300 transform hover:scale-105 shadow-md"
         >
           ADD TASK-TEXT
+        </button>
+      )}
+      {kickbtn && (
+        <button
+          onClick={() => { navigate('/removemember') }}
+          className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 transform hover:scale-105 shadow-md"
+        >
+          KICK MEMBERS
         </button>
       )}
       <button

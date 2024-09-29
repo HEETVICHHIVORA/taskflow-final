@@ -9,7 +9,7 @@ export function Addbysound() {
   const mediaRecorderRef = useRef(null);
   const [audioblobcopy,setcopy]=useState();
   const {setloader}=useContext(AppContext)
-
+  const [isListening,setIsListening]=useState(false);
   const navigate=useNavigate();
 
   const {teamName}=useContext(AppContext);
