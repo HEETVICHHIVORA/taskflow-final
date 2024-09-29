@@ -10,7 +10,7 @@ export function Addbysound() {
   const [recordings, setRecordings] = useState([]);
   const mediaRecorderRef = useRef(null);
   const [audioblobcopy,setcopy]=useState();
-  const {setloader}=useContext(AppContext)
+  const {setloader}=useContext(AppContext);
 
   const navigate=useNavigate();
 
