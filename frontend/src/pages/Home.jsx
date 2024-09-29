@@ -37,15 +37,15 @@ function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50 font-open-sans">
-            <nav className="bg-gray-800 text-white  shadow-lg">
+            <nav className="bg-gray-800 text-white shadow-lg">
                 <div className="container mx-auto px-5 py-2 flex items-center justify-between">
-                    <a href="#" className="flex items-center space-x-4">
+                    <a href="#" className="flex items-center"> {/* space kam*/}
                         <img
                             src="../public/image.png"
                             alt="Logo"
-                            className="w-10 h-10 rounded-full"
+                            className="w-11 h-11 rounded-full"
                         />
-                        <span className="text-3xl md:text-4xl lg:text-4 xl font-poppins font-bold">TaskFlo</span>
+                        <span className="text-3xl md:text-4xl lg:text-4xl font-poppins font-bold">askflo</span>
                     </a>
                     <div className="flex space-x-6 md:space-x-8">
                         <Link to="/about" className="hover:text-teal-400 transition duration-300 text-lg font-semibold">About Us</Link>
@@ -54,9 +54,6 @@ function Home() {
                 </div>
             </nav>
 
-
-
-        
             <section className="bg-white animate-fadeIn">
                 <div className="container mx-auto px-6 py-20 flex flex-col md:flex-row items-center">
                     <div className="md:w-1/2">
@@ -76,28 +73,24 @@ function Home() {
                 </div>
             </section>
 
-        
             <section className="bg-gray-100 py-20 animate-fadeIn">
                 <div className="container mx-auto px-6">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12 font-poppins">
                         About Us
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                   
                         <div className="text-center p-6 transition-transform transform hover:scale-105 bg-white shadow-md rounded-lg">
                             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Our Vision</h3>
                             <p className="text-gray-600">
                                 We envision seamless collaboration. Our aim is to simplify project management.
                             </p>
                         </div>
-                     
                         <div className="text-center p-6 transition-transform transform hover:scale-105 bg-white shadow-md rounded-lg">
                             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h3>
                             <p className="text-gray-600">
                                 We provide the tools to boost productivity and enhance communication.
                             </p>
                         </div>
-                      
                         <div className="text-center p-6 transition-transform transform hover:scale-105 bg-white shadow-md rounded-lg">
                             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Our Values</h3>
                             <p className="text-gray-600">
@@ -108,7 +101,6 @@ function Home() {
                 </div>
             </section>
 
-         
             <section className="bg-white py-20 animate-fadeIn">
                 <div className="container mx-auto px-6">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12 font-poppins">

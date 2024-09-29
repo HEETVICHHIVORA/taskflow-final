@@ -170,7 +170,7 @@ const {taskschema}=require("../models/task");
     
        return res.json({
         success:true,
-        message:" deleted",
+        message:"Chat deleted",
       })
     }
     catch{
