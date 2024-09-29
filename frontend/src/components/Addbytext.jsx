@@ -64,53 +64,72 @@ export const Addbytext = () => {
     const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
 
     return (
-        <div className="h-[100vh] w-[100vw] flex justify-center items-center">
-            <div className="w-[50%] gap-y-10 h-fit flex flex-col justify-center items-center">
-                <div className="flex justify-center items-center w-full h-full">
-                    <textarea
-                        value={description}
-                        onInput={handleInputChange}
-                        rows={1}
-                        className="block w-full max-w-[50%] px-0 text-sm outline-none bg-gray-100 text-gray-800 rounded-md resize-none"
-                        placeholder="Write an article....."
-                        required
-                    />
-                </div>
-                <button
-                    onClick={handleTextPost}
-                    type="button"
-                    className="flex justify-center items-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5"
-                >
-                    Post
-                </button>
+        <div className="h-screen w-screen flex justify-center items-center bg-blue-50">
+          <div className="w-full max-w-2xl flex flex-col gap-y-10 p-6 bg-white rounded-lg shadow-lg">
+            <div className="flex flex-col mb-4">
+              <textarea
+                value={description}
+                onChange={handleInputChange} // Changed from onInput to onChange
+                rows={3}
+                className="block w-full p-3 text-sm outline-none bg-gray-200 text-gray-800 rounded-md resize-none shadow-md transition duration-300 focus:bg-white focus:ring-2 focus:ring-teal-500"
+                placeholder="Write an article..."
+                required
+              />
+              <button
+                onClick={handleTextPost}
+                type="button"
+                className="mt-4 flex justify-center items-center text-white bg-teal-600 hover:bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 transition duration-300"
+              >
+                Post
+              </button>
             </div>
-            
-            <div className="container">
-                <h2>Speech to Text Converter</h2>
-                <br />
-                <p>A React hook that converts speech from the microphone to text and makes it available to your React components.</p>
-
-                <div className="main-content" onClick={() => setTextToCopy(transcript)}>
-                    {transcript}
-                </div>
-
-                <div className="btn-style">
-                    <button className='border' onClick={setCopied}>
-                        {isCopied ? 'Copied!' : 'Copy to clipboard'}
-                    </button>
-                    <button className='border' onClick={startListening}>Start Listening</button>
-                    <button className='border' onClick={SpeechRecognition.stopListening}>Stop Listening</button>
-                    <button className='border' onClick={resetTranscript}>Reset Transcript</button>
-                </div>
-
+      
+            <div className="container mx-auto p-5 bg-white rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-2 text-black pb-4">Prefer Speaking? Use This!</h2>
+      
+              <div
+                className="main-content border border-gray-300 p-4 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer mb-4 "
+                onClick={() => setTextToCopy(transcript)}
+              >
+                {transcript || "Start speaking..."}
+              </div>
+      
+              <div className="btn-style flex flex-wrap gap-6 mb-4 justify-center">
                 <button
-                    onClick={handleSpeechPost}
-                    type="button"
-                    className="flex justify-center items-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5"
+                  className="border border-gray-400 px-2 py-1 rounded-md bg-yellow-300 hover:bg-yellow-400 transition duration-200 text-m font-semibold"
+                  onClick={setCopied}
                 >
-                    Post Speech
+                  {isCopied ? 'Copied!' : 'Copy'}
                 </button>
+                <button
+                  className="border border-gray-400 px-2 py-1 rounded-md bg-green-300 hover:bg-green-400 transition duration-200 text-m font-semibold"
+                  onClick={startListening}
+                >
+                  Start
+                </button>
+                <button
+                  className="border border-gray-400 px-2 py-1 rounded-md bg-red-300 hover:bg-red-400 transition duration-200 text-m font-semibold"
+                  onClick={SpeechRecognition.stopListening}
+                >
+                  Stop
+                </button>
+                <button
+                  className="border border-gray-400 px-2 py-1 rounded-md bg-purple-300 hover:bg-purple-400 transition duration-200 text-m font-semibold"
+                  onClick={resetTranscript}
+                >
+                  Reset
+                </button>
+              </div>
+      
+              <button
+                onClick={handleSpeechPost}
+                type="button"
+                className="flex justify-center items-center w-full text-white bg-teal-600 hover:bg-blue-700 font-medium rounded-full text-sm px-5 py-2.5 transition duration-300"
+              >
+                Post    
+              </button>
             </div>
+          </div>
         </div>
-    );
-};
+      );
+    }
