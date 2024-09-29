@@ -7,12 +7,12 @@ export function Addbysound() {
   const audio = useRef([]);
   const [recordings, setRecordings] = useState([]);
   const mediaRecorderRef = useRef(null);
-  const [audioblobcopy,setcopy]=useState();
-  const {setloader}=useContext(AppContext)
+  const [audioblobcopy, setcopy] = useState();
+  const { setloader } = useContext(AppContext);
 
-  const navigate=useNavigate();
-
-  const {teamName}=useContext(AppContext);
+  const navigate = useNavigate();
+  const { teamName } = useContext(AppContext);
+  const [isListening, setIsListening] = useState(false);
 
   async function startRec() {
     try {
@@ -29,13 +29,12 @@ export function Addbysound() {
         const audioBlob = new Blob(audio.current, { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setcopy(audioBlob);
-        setRecordings((prev) => [audioUrl]);
-        setIsListening(false); // Stop listening when recording stops
+        setRecordings((prev) => [...prev, audioUrl]);
       };
 
       mediaRecorderRef.current = mediaRecorder;
       mediaRecorder.start();
-      setIsListening(true); // Start listening when recording starts
+      setIsListening(true);
     } catch (e) {
       console.log(e);
     }
@@ -44,6 +43,7 @@ export function Addbysound() {
   function stopRec() {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
+      setIsListening(false);
     }
   }
 
@@ -52,9 +52,8 @@ export function Addbysound() {
     const reader = new FileReader();
     reader.readAsDataURL(audioblobcopy);
     reader.onloadend = async () => {
-      const base64data = reader.result.split(',')[1]; // Remove the data URL prefix
+      const base64data = reader.result.split(',')[1];
 
-      // Prepare JSON data to send to the server
       const audioData = {
         audioBlob: base64data,
         filename: 'recording.wav',
@@ -63,7 +62,6 @@ export function Addbysound() {
         reqtype: 'audio'
       };
 
-      // Post the data to the server
       try {
         const response = await fetch('http://localhost:4000/sendToGroup', {
           method: 'POST',
@@ -89,40 +87,36 @@ export function Addbysound() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen gap-y-10 font-semibold">
-      {isListening && (
-        <p className="text-lg text-green-600 mb-4">Listening...</p> // Added Listening text
-      )}
-      <div className="flex space-x-4"> {/* Reduced space between buttons */}
-        <button 
-          onClick={startRec} 
-          className="bg-teal-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-teal-600 transition duration-300 transform hover:scale-105"
+    <div className="flex flex-col justify-center items-center h-screen font-bold">
+      <div className="flex space-x-4 mb-4">
+        <button
+          onClick={startRec}
+          className="bg-teal-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-teal-600 transition duration-300"
         >
           START
         </button>
-        <button 
-          onClick={stopRec} 
-          className="bg-red-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-red-600 transition duration-300 transform hover:scale-105"
+        <button
+          onClick={stopRec}
+          className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
         >
           STOP
         </button>
-        <button 
-          onClick={send} 
-          className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105"
+        <button
+          onClick={send}
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
         >
           SEND
         </button>
       </div>
 
-      <div className="flex flex-col items-center space-y-6 mt-6"> {/* Adjusted spacing and margin */}
-        {
-          recordings.map((recUrl, index) => (
-            <div key={index} className="flex flex-col items-center bg-gray-50 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 w-full max-w-md"> {/* Set max width for audio controls */}
-              <audio controls src={recUrl} className="w-full rounded-md" />
-             
-            </div>
-          ))
-        }
+      {isListening && <p className="text-lg text-black mb-4">Listening...</p>}
+
+      <div className="mt-4">
+        {recordings.map((recUrl, index) => (
+          <div key={index}>
+            <audio controls src={recUrl} />
+          </div>
+        ))}
       </div>
     </div>
   );
