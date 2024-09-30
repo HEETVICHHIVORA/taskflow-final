@@ -292,6 +292,7 @@ const mongoose = require('mongoose');
     }
   }
 
+
   exports.getgroupmembers=async(req,res)=>{
     try{
       const {teamName}=req.body;
@@ -316,6 +317,51 @@ const mongoose = require('mongoose');
     }
   }
 
+  exports.getnongroupmembers=async(req,res)=>{
+    try{
+      const {teamName}=req.body;
+
+      const users = await User.find({}, 'name');
+
+      const group=await groupschema.findOne({name:teamName}).populate('members');
+      // console.log(group)
+
+      const groupmembers=[];
+      for(let i=0;i<group.members.length;i++){
+        groupmembers.push(group.members[i].name);
+      }
+
+      // console.log("GRP MEMS : " , groupmembers);
+      const curruser=req.user;
+      // console.log("user : ",curruser)
+
+      // console.log("USERS : ",users);
+
+      const nongroupmembers=[];
+      for(let i=0;i<users.length;i++){
+        
+        if(groupmembers.includes(users[i].name) || users[i].name===curruser.name) continue;
+
+        
+        nongroupmembers.push(users[i]);
+      }
+
+      
+
+      return res.status(200).json({
+        success:true,
+        message:"All non groups members are fetched",
+        allusers:nongroupmembers
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to get non group members",
+        error: e.message
+    });
+    }
+  }
   exports.removemember=async(req,res)=>{
     try{
       const {members,teamName}=req.body;
@@ -345,6 +391,40 @@ const mongoose = require('mongoose');
       res.status(500).json({
         success: false,
         message: "Failed to remove members",
+        error: e.message
+    });
+    }
+  }
+
+  exports.addmembers=async(req,res)=>{
+    try{
+      const {members,teamName}=req.body;
+
+
+      if(members.length==0){
+        return res.json({
+          success:false,
+          message:"Select atleast one user"
+        })
+      }
+      const group=await groupschema.findOne({name:teamName});
+
+      for(let i=0;i<members.length;i++){
+        const memberid=members[i].id;
+
+        await User.findByIdAndUpdate(memberid,{$push:{group:group._id}},{new:true})
+        await groupschema.findOneAndUpdate({name:teamName},{$push:{members:memberid}},{new:true})
+      }
+
+      return res.status(200).json({
+        success:true,
+        message:"New Members Added successfully"
+      })
+    }
+    catch(e){
+      res.status(500).json({
+        success: false,
+        message: "Failed to add new members",
         error: e.message
     });
     }

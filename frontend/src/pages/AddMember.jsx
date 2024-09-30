@@ -7,13 +7,12 @@ import { useContext } from "react";
 import { IoIosSearch } from "react-icons/io";
 
 
-function CreateTeam(){
+function AddMember(){
 
-    const [newTeamName,setnewTeamName]=useState("");
     const [allUsers,setallUsers]=useState([]);
     const navigate=useNavigate();
     const [newTeamMembers,setnewTeamMembers]=useState([]);
-    const {setloader}=useContext(AppContext);
+    const {setloader,teamName}=useContext(AppContext);
     const [searchInput,setsearchInput]=useState("");
 
     const [showusers,setshowusers]=useState([]);
@@ -22,15 +21,26 @@ function CreateTeam(){
     async function fetchallUsers() {
         setloader(true)
         try{
-            const response=await fetch('http://localhost:4000/getallusers',
-                {credentials:'include'}
-            );
+            const response=await fetch('http://localhost:4000/getnongroupmembers',{
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    teamName:teamName
+                }),
+                credentials: "include"
+            });
 
             const result=await response.json();
-            // console.log("HEHE :- " , result )
+            // console.log(result)
+            
             if(result.success){
                 setallUsers(result.allusers)
                 setshowusers(result.allusers)
+            }
+            else{
+                console.log(result.error)
             }
         }
         catch(e){
@@ -40,24 +50,22 @@ function CreateTeam(){
     }
 
     useEffect(()=>{
+        // console.log(teamName)
         fetchallUsers();
     },[]);
 
-    function changeHandler(e){
-        setnewTeamName(e.target.value)
-    }
 
     async function submitHandler(){
         setloader(true)
         try{
-            const response = await fetch('http://localhost:4000/createNewTeam', {
+            const response = await fetch('http://localhost:4000/addmembers', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     members:newTeamMembers,
-                    teamName:newTeamName
+                    teamName:teamName
                 }),
                 credentials: "include"
             });
@@ -82,32 +90,6 @@ function CreateTeam(){
         setsearchInput(e.target.value);
     }
 
-    // async function searchUsers() {
-        
-    //     try {
-    //         const response = await fetch('http://localhost:4000/searchUsers', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({
-    //                 prefix: searchInput
-    //             }),
-    //             credentials:'include'
-    //         });
-
-    //         const result = await response.json();
-    //         if (result.success) {
-    //             setallUsers(result.users);
-    //             // console.log("All teams fetched successfully",result.groups);
-    //         } else {
-    //             console.error("Failed to save:", result.message);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error saving audio:", error);
-    //     }
-        
-    // }
 
     function searchUsers(){
         const newArray=allUsers.filter(user=> user.name.includes(searchInput));
@@ -118,16 +100,12 @@ function CreateTeam(){
         searchUsers();
     },[searchInput])
 
+    // useEffect(()=>{
+    //     console.log(newTeamMembers)
+    // },[newTeamMembers])
+
     return (
       <div className="w-screen bg-blue-50 h-screen flex flex-col items-center justify-center gap-y-10 p-4">
-  <h1 className="font-bold text-2xl text-center">New Team Name</h1>
-  <input
-    type="text"
-    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    value={newTeamName}
-    onChange={changeHandler}
-    placeholder="Enter team name"
-  />
 
   <p className="mt-4 text-2xl font-bold ">Search User</p>
   <div className="w-full max-w-md mx-auto my-2 bg-slate-300 rounded-md px-3 py-2 flex items-center border border-gray-300">
@@ -160,7 +138,7 @@ function CreateTeam(){
     className="mt-4 bg-green-500 text-white font-bold rounded-lg px-4 py-2 hover:bg-green-600 transition duration-200"
     onClick={submitHandler}
   >
-    Create Team
+    ADD
   </button>
 </div>
 
@@ -168,4 +146,4 @@ function CreateTeam(){
     )
 }
 
-export default CreateTeam;
+export default AddMember;

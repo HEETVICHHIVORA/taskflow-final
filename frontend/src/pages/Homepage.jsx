@@ -54,7 +54,7 @@ import { useContext } from "react";
         try {
             const response = await fetch(`http://localhost:4000/getAllTasks?name=${teamName}`);
             const result = await response.json();
-            console.log("from mesage " , result);
+            // console.log("from mesage " , result);
             if (result.success) {
                 const audioDataArray = result.audioData.map(audio => {
                     if (audio.content.length === 0) {

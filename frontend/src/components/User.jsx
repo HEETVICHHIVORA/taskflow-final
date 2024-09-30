@@ -13,7 +13,7 @@ function User({user,newTeamMembers,setnewTeamMembers}) {
             setnewTeamMembers([...newTeamMembers, obj]);
         }
     
-        console.log(newTeamMembers);
+        // console.log(newTeamMembers);
     }
     
   return (

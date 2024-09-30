@@ -4,7 +4,7 @@ import Message from "./Message";
 
 const Chatbox = ({ tasks, currUser ,settasks,showTasks}) => {
   useEffect(() => {
-    console.log(tasks);
+    // console.log(tasks);
   }, [tasks]);
 
   const { teamName } = useContext(AppContext);

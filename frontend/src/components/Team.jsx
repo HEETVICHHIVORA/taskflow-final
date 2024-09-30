@@ -35,7 +35,7 @@ export const Team = ({ group, tasks, settasks, setaddbtn, setaddbtnfortext, crea
         localStorage.setItem('group',group.name);
         setaddbtn(true);
         setaddbtnfortext(true);
-        setkickbtn(true);
+        if(createteam) setkickbtn(true);
         setloader(true);
         try {
             const response = await fetch(`http://localhost:4000/getAllTasks?name=${group.name}`);

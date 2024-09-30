@@ -63,6 +63,14 @@ export const Appbar=({addbtn,createTeam,addbtnfortext,kickbtn})=>{
       )}
       {kickbtn && (
         <button
+          onClick={() => { navigate('/addmember') }}
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full transition duration-300 transform hover:scale-105 shadow-md"
+        >
+          ADD MEMBERS
+        </button>
+      )}
+      {kickbtn && (
+        <button
           onClick={() => { navigate('/removemember') }}
           className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 transform hover:scale-105 shadow-md"
         >

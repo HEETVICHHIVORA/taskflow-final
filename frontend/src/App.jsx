@@ -8,6 +8,7 @@ import { Addbysound } from './components/Addbysound';
 import  Homepage  from "./pages/Homepage";
 import CreateTeam from "./pages/CreateTeam";
 import KickMember from "./pages/KickMember";
+import AddMembers from "./pages/AddMember";
 import Loader from './components/Loader';
 import { AppContext } from "./context/AppContext";
 import { useContext } from "react";
@@ -29,6 +30,7 @@ function App() {
           <Route path='/createvoice' element ={<Addbysound/>}></Route>
           <Route path='/createteam' element ={<CreateTeam/>}></Route>
           <Route path='/removemember' element ={<KickMember/>}></Route>
+          <Route path='/addmember' element ={<AddMembers/>}></Route>
         </Routes>
       </Router>
       {loader && <div className="fixed top-0 right-0 left-0  flex justify-center items-center h-full bg-black bg-opacity-50 z-50"><Loader/></div>}
