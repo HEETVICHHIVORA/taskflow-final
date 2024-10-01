@@ -31,7 +31,7 @@ export const Appbar=({addbtn,createTeam,addbtnfortext,kickbtn})=>{
         setloader(false)
     }
 
-    return   <div className="bg-gray-50 text-gray-800 border-b border-gray-300 flex justify-between items-center px-6 md:px-10 py-4 shadow-md">
+    return   <div className="fixed z-10 bg-gray-50 text-gray-800 border-b border-gray-300 flex justify-between items-center px-6 md:px-10 py-4 shadow-md">
     <div className="text-2xl font-bold tracking-wide font-poppins">
       TaskFlo
     </div>

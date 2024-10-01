@@ -48,7 +48,7 @@ export const Sidebar =({tasks,settasks,setaddbtn,setaddbtnfortext,createteam,set
     },[groups])
 
 
-    return <div className="w-[30%] h-screen">
+    return <div className="w-[30%] h-screen mt-20">
 
         <Searchbar groups={groups} setgroups={setgroups}></Searchbar>
         {groups?.map((group,index)=>{

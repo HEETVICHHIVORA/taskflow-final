@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import Message from "./Message";
-
+import Message from "./message";
 const Chatbox = ({ tasks, currUser ,settasks,showTasks}) => {
   useEffect(() => {
     // console.log(tasks);
@@ -10,7 +9,7 @@ const Chatbox = ({ tasks, currUser ,settasks,showTasks}) => {
   const { teamName } = useContext(AppContext);
 
   return (
-    <div className="flex flex-col h-screen w-[calc(100%-300px)] bg-gray-50 overflow-y-auto shadow-lg"> {/* Adjusted width */}
+    <div className=" mt-20 flex flex-col h-screen w-[calc(100%-300px)] bg-gray-50 overflow-y-auto shadow-lg"> {/* Adjusted width */}
     <div className={`w-full flex flex-col justify-center items-center py-5 text-3xl font-semibold rounded-md transition-all duration-300 ${teamName.length > 0 ? 'bg-green-200 text-gray-800' : 'bg-gray-200 text-gray-600'}`}>
       {teamName.length > 0 ? teamName : "No Team Selected"}
     </div>

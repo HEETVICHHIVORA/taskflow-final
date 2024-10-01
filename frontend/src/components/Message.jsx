@@ -38,7 +38,7 @@ const Message = ({ currUser, taskname, taskurl, taskmessage, taskid,showTasks })
   return (
     <div className='w-[90%] max-w-[50%] flex flex-col gap-y-2 group'>
       <div>
-        {currUser !== taskname && <p className="text-lg font-bold text-blue-500">{taskname}</p>}
+        {currUser !== taskname ? <p className="text-lg font-bold text-blue-500">{taskname}</p>:<p className="text-end text-lg font-bold text-blue-500">You</p>}
       </div>
       <div className={`flex items-center gap-x-2 ${currUser===taskname && 'flex-row-reverse'}`}>
         <div className='w-fit '> 
