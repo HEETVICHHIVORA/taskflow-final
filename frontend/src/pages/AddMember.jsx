@@ -116,6 +116,7 @@ function AddMember(){
       type="text"
       value={searchInput}
       onInput={changeHandler2}
+      autoFocus
     />
   </div>
 

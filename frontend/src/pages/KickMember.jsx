@@ -108,6 +108,7 @@ function KickMember(){
             type="text"
             value={searchInput}
             onInput={changeHandler2}
+            autoFocus
             />
   </div>
 

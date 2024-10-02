@@ -127,6 +127,7 @@ function CreateTeam(){
     value={newTeamName}
     onChange={changeHandler}
     placeholder="Enter team name"
+    autoFocus
   />
 
   <p className="mt-4 text-2xl font-bold ">Search User</p>
