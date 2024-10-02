@@ -141,20 +141,22 @@ function CreateTeam(){
     />
   </div>
 
-  <div className="h-auto w-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-auto al justify-center align-middle">
-    {showusers ? (
-      showusers.map((user, index) => (
-        <User
-          user={user}
-          key={index}
-          newTeamMembers={newTeamMembers}
-          setnewTeamMembers={setnewTeamMembers}
-        />
-      ))
-    ) : (
-      <p className="text-center">Fetching users...</p>
-    )}
-  </div>
+  <div 
+  className="h-[20%] w-[20%] grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 overflow-auto al justify-center align-middle"style={{ scrollbarWidth: 'none', msOverflowStyle: 'none',}}>
+  {showusers ? (
+    showusers.map((user, index) => (
+      <User
+        user={user}
+        key={index}
+        newTeamMembers={newTeamMembers}
+        setnewTeamMembers={setnewTeamMembers}
+      />
+    ))
+  ) : (
+    <p className="text-center">Fetching users...</p>
+  )}
+</div>
+
 
   <button
     className="mt-4 bg-green-500 text-white font-bold rounded-lg px-4 py-2 hover:bg-green-600 transition duration-200"
