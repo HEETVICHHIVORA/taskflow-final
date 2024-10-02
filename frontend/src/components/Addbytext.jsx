@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import useClipboard from "react-use-clipboard";
+import { useEffect } from "react";
 
 export const Addbytext = () => {
     const { teamName } = useContext(AppContext);
@@ -62,6 +63,24 @@ export const Addbytext = () => {
     };
 
     const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+
+    useEffect(() => {
+      // Check if the page is being refreshed
+      const isPageRefreshed = sessionStorage.getItem('isPageRefreshed');
+
+      if (isPageRefreshed) {
+          // Redirect to /home if page is refreshed
+          navigate('/home');
+      } else {
+          // Set flag to indicate that the page has been loaded
+          sessionStorage.setItem('isPageRefreshed', 'true');
+      }
+
+      // Clean up flag on component unmount
+      return () => {
+          sessionStorage.removeItem('isPageRefreshed');
+      };
+  }, [navigate]);
 
     return (
         <div className="h-screen w-screen flex justify-center items-center bg-blue-50">

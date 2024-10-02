@@ -118,6 +118,24 @@ function CreateTeam(){
         searchUsers();
     },[searchInput])
 
+    useEffect(() => {
+      // Check if the page is being refreshed
+      const isPageRefreshed = sessionStorage.getItem('isPageRefreshed');
+
+      if (isPageRefreshed) {
+          // Redirect to /home if page is refreshed
+          navigate('/home');
+      } else {
+          // Set flag to indicate that the page has been loaded
+          sessionStorage.setItem('isPageRefreshed', 'true');
+      }
+
+      // Clean up flag on component unmount
+      return () => {
+          sessionStorage.removeItem('isPageRefreshed');
+      };
+  }, [navigate]);
+
     return (
       <div className="w-screen bg-blue-50 h-screen flex flex-col items-center justify-center gap-y-10 p-4">
   <h1 className="font-bold text-2xl text-center">New Team Name</h1>

@@ -2,7 +2,7 @@ import { useRef, useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-
+import { useEffect } from "react";
 export function Addbysound() {
   const audio = useRef([]);
   const [recordings, setRecordings] = useState([]);
@@ -85,6 +85,24 @@ export function Addbysound() {
       setloader(false);
     };
   }
+
+  useEffect(() => {
+    // Check if the page is being refreshed
+    const isPageRefreshed = sessionStorage.getItem('isPageRefreshed');
+
+    if (isPageRefreshed) {
+        // Redirect to /home if page is refreshed
+        navigate('/home');
+    } else {
+        // Set flag to indicate that the page has been loaded
+        sessionStorage.setItem('isPageRefreshed', 'true');
+    }
+
+    // Clean up flag on component unmount
+    return () => {
+        sessionStorage.removeItem('isPageRefreshed');
+    };
+}, [navigate]);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen font-bold">
