@@ -114,12 +114,15 @@ function KickMember(){
   <div className="h-[20%] w-[20%]  grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 overflow-auto al justify-center align-middle"style={{ scrollbarWidth: 'none', msOverflowStyle: 'none',}}>
     {showusers ? (
       showusers.map((user, index) => (
-        <User
+        <div className="text-align-center">
+          <User
           user={user}
           key={index}
           newTeamMembers={removemember}
           setnewTeamMembers={setremovemember}
         />
+        </div>
+        
       ))
     ) : (
       <p className="text-center">Fetching users...</p>

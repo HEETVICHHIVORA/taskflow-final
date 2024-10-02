@@ -17,7 +17,7 @@ function User({user,newTeamMembers,setnewTeamMembers}) {
     }
     
   return (
-    <div className="bg-gray-900 text-white font-bold p-2 rounded-md duration-200 cursor-pointer" onClick={clickHandler}>
+    <div className="bg-black text-white text-center font-bold p-2 rounded-md cursor-pointer" onClick={clickHandler}>
         {user.name}
     </div>
   )
