@@ -12,7 +12,6 @@ import AddMembers from "./pages/AddMember";
 import Loader from './components/Loader';
 import { AppContext } from "./context/AppContext";
 import { useContext } from "react";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
